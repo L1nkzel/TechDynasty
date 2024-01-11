@@ -1,8 +1,18 @@
+import { Box} from "@mui/material";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import "./assets/styles/main.css";
 
 const App = () => {
   return (
-    <h1>Welcome to Tech Dynasty</h1>
-  )
-}
+    <>
+      <Header />
+      <Box minHeight="82vh">
 
-export default App
+      </Box>
+      <Footer />
+    </>
+  );
+};
+
+export default App;
