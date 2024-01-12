@@ -22,7 +22,7 @@ const products = [
     category: 'Phones',
     price: 1399.99,
     countInStock: 15,
-    rating: 4.6,
+    rating: 3.8,
     numReviews: 20,
   },
   {
