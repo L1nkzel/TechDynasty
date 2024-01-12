@@ -1,12 +1,15 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
+import Rating from "./Rating";
 
 interface ProductType {
   image: string;
   name: string;
   price: number;
   _id: string;
+  rating: number;
+  numReviews: number;
 }
 
 const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
@@ -17,11 +20,14 @@ const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
       </Link>
       <CardContent>
         <Link to={`/product/${product._id}`}>
-          <Typography fontSize={18} component="div">
+          <Typography fontSize={18} textOverflow="ellipsis" whiteSpace="nowrap" component="div" >
             {product.name}
           </Typography>
         </Link>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Box>
+            <Rating value={product.rating} text={product.numReviews}/>
+        </Box>
+        <Typography fontSize={20} color="text.secondary">
           $ {product.price}
         </Typography>
       </CardContent>
