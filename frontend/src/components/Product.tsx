@@ -25,10 +25,10 @@ const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
           </Typography>
         </Link>
         <Box>
-            <Rating value={product.rating} text={product.numReviews}/>
+            <Rating iconFontSize={20} value={product.rating} text={`${product.numReviews} reviews`}/>
         </Box>
-        <Typography fontSize={20} color="text.secondary">
-          $ {product.price}
+        <Typography fontSize={20} color="secondary">
+          {`$${product.price}`}
         </Typography>
       </CardContent>
     </Card>
