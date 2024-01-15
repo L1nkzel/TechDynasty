@@ -1,7 +1,19 @@
+import { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import products from "../products";
-import Product from "../components/Product";
+import Product, { ProductType } from "../components/Product";
+import axios from "axios";
 const HomeScreen = () => {
+
+const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get("/api/products");
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <Typography fontSize={22} margin={2} ml={8} color={"darkkhaki"}>
@@ -17,8 +29,8 @@ const HomeScreen = () => {
           columnGap={2}
         >
           {products.map((product) => (
-            <Grid item key={product._id} xs={8} sm={5} md={3}>
-              <Product product={product} />
+            <Grid item xs={8} sm={5} md={3}>
+              <Product product={product} key={product._id}/>
             </Grid>
           ))}
         </Grid>

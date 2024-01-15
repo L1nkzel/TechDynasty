@@ -3,13 +3,15 @@ import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
-interface ProductType {
+export interface ProductType {
   image: string;
   name: string;
   price: number;
   _id: string;
   rating: number;
   numReviews: number;
+  countInStock: number;
+  description: string;
 }
 
 const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
