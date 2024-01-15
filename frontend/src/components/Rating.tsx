@@ -8,7 +8,6 @@ interface RatingProps {
   value: number;
   text: string;
   iconFontSize: number;
-
 }
 
 const ratingArray = [1, 2, 3, 4, 5];
