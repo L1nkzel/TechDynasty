@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'LG C3 65"',
     image: '../images/products/lgc3.jpg',
     description:
@@ -13,7 +12,6 @@ const products = [
     numReviews: 11,
   },
   {
-    _id: '2',
     name: 'Samsung Galaxy s23',
     image: '../images/products/samsungs23.jpg',
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 20,
   },
   {
-    _id: '3',
     name: 'Cannon EOS 80D',
     image: '../images/products/canon80d.jpg',
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 5,
   },
   {
-    _id: '4',
     name: 'HyperX Cloud Alpha',
     image: '../images/products/cloudAlpha.jpg',
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: '5',
     name: 'Playstation 5',
     image: '../images/products/ps5.jpg',
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 9,
   },
   {
-    _id: '6',
     name: 'Nintendo Switch Oled',
     image: '../images/products/switchOled.jpg',
     description:
