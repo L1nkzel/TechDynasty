@@ -10,6 +10,7 @@ export interface ProductType {
   _id: string;
   rating: number;
   numReviews: number;
+  category: string;
   countInStock: number;
   description: string;
 }
@@ -17,15 +18,16 @@ export interface ProductType {
 const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
   return (
     <Card>
-      <Link to={`/product/${product._id}`}>
+      <Link to={`/${product.category}/${product._id}`}>
         <CardMedia component="img" image={product.image} />
       </Link>
+    
       <CardContent>
-        <Link to={`/product/${product._id}`}>
+      <Link to={`/${product.category}/${product._id}`}>
           <Typography fontSize={18} textOverflow="ellipsis" whiteSpace="nowrap" component="div" >
             {product.name}
           </Typography>
-        </Link>
+          </Link>
         <Box>
             <Rating iconFontSize={20} value={product.rating} text={`${product.numReviews} reviews`}/>
         </Box>

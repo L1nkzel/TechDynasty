@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid} from "@mui/material";
 import Product, { ProductType } from "../components/Product";
 import axios from "axios";
-const HomeScreen = () => {
-  const [products, setProducts] = useState<ProductType[]>([]);
+import { useParams } from "react-router-dom";
+const CategoryScreen = () => {
+
+const [products, setProducts] = useState<ProductType[]>([]);
+
+    const {category: category } = useParams();
+
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await axios.get("/api/products");
+      const { data } = await axios.get(`/api/products/category/${category}`);
       setProducts(data);
     };
     fetchProducts();
-  }, []);
+  }, [category]);
 
   return (
     <>
-      <Typography fontSize={24} margin={2} ml={12} color={"darkkhaki"}>
-        Latest Products{" "}
-      </Typography>
+    
       <Box display={"flex"} justifyContent={"center"} mb={4}>
         <Grid
           container
@@ -29,7 +32,7 @@ const HomeScreen = () => {
         >
           {products.map((product) => (
             <Grid item xs={8} sm={5} md={3} key={product._id}>
-              <Product product={product} />
+              <Product product={product}/>
             </Grid>
           ))}
         </Grid>
@@ -38,4 +41,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default CategoryScreen;
