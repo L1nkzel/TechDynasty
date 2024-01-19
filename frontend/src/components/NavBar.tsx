@@ -1,17 +1,32 @@
-import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@material-ui/core/Button";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { List, ListItem, ListItemText, Collapse, Box} from "@mui/material";
+import {
+  Box,
+  Stack,
+  IconButton,
+  createTheme,
+  ThemeProvider,
+  Typography,
+  Button,
+} from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import UserIcon from "@mui/icons-material/Person";
 import Colors from "../assets/styles/Colors";
 import { Link } from "react-router-dom";
+import Logo from "../assets/logo.png";
+import { MyDrawer } from "./MyDrawer";
 
+declare module '@mui/material/styles' {
+  interface BreakpointOverrides {
+    xxs:true;
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+  }
+}
 
 // Using Inline Styling
 const useStyles = makeStyles(() => ({
@@ -19,78 +34,76 @@ const useStyles = makeStyles(() => ({
     position: "fixed",
     background: Colors.header100,
   },
-  menuButton: {
-    display: "flex",
-    justifyContent: "flex-end",
-    flexGrow: 1,
-  },
+  menuButton: {},
 }));
+
 
 export default function NavBar() {
   const classes = useStyles();
-  const small = useMediaQuery("(max-width:600px)");
-  const full = useMediaQuery("(min-width:600px)");
 
-  const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xxs: 0 ,
+        xs: 400,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      }
+    },
+  });
+
+
 
   return (
+    <ThemeProvider theme={theme}>
     <AppBar className={classes.root}>
       <Toolbar>
-        {small && (
-          <Box flex={1}>
-            <Box display={"flex"}>
-
-              <Typography variant="h6" color="inherit" component={"div"}>
-                Tech Dynasty
-              </Typography>
-              <Box className={classes.menuButton}>
-                <Button style={{ color: "white" }} onClick={handleClick}>
-                  <MenuIcon />
-                </Button>
-              </Box>
-            </Box>
-            <Collapse in={open} timeout="auto">
-              <List component="div" disablePadding>
-                <Link to="/" style={{color: "white", textDecoration: "none"}}>
-                  <ListItem>
-                    <ListItemText primary="Cart" />
-                  </ListItem>
-                </Link>
-                <Link to="/" style={{color: "white", textDecoration: "none"}}>
-                  <ListItem>
-                    <ListItemText primary="Log in" />
-                  </ListItem>
-                </Link>
-              </List>
-            </Collapse>
-          </Box>
-        )}
-
-        {full && (
-          <Box display="flex" flexGrow={1}>
-            <Link to="/" style={{color: "white", textDecoration: "none"}}>
-            <Typography variant="h6">
-              Tech Dynasty
-            </Typography>
-            </Link>
-            <Box display="flex" justifyContent="end" flexGrow={1}>
+          {/* Drawer */}
+        <MyDrawer />
+        <Box display="flex" flex={1} alignItems={"center"}>
+          {/*Logo */}
+          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+            <Box
+              component="img"
+              src={Logo}
+              sx={{ maxWidth: {xxs:130, xs: 180, sm: 230 } }}
+            />
+          </Link>
+          
+          {/*Navigation buttons for login and cart */}
+          <Stack
+            display="flex"
+            flexDirection="row"
+            justifyContent="end"
+            flexGrow={1}
+          >
+            <Box sx={{ display: { xxs: "none", sm: "block"}}}>
               <Button href="/" color="inherit">
                 <ShoppingCartIcon />
-                Cart
+                <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17}}}>Cart</Typography>
               </Button>
-
               <Button href="/" color="inherit">
-                <UserIcon />
-                Log in
+                <UserIcon  />
+                <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17}}}>Log in</Typography>
               </Button>
             </Box>
-          </Box>
-        )}
+            <Box sx={{ display: { xxs: "block", sm: "none" }}}>
+              <IconButton href="/" color="inherit" >
+                <ShoppingCartIcon
+                sx={{ fontSize: {xxs: 20}}}
+                />
+              </IconButton>
+              <IconButton href="/" color="inherit">
+                <UserIcon sx={{ fontSize: {xxs: 20}}}/>
+              </IconButton>
+              </Box>
+          </Stack>
+        </Box>
       </Toolbar>
     </AppBar>
+    </ThemeProvider>
   );
 }

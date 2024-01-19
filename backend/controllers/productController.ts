@@ -10,8 +10,6 @@ const getAllproducts = asyncHandler(async (req, res) => {
     const products = await Product.find({})
     res.json(products)
 });
-
-
 /*  
  * @desc Fetches a single product by ID
  * @route GET /api/products/:id
@@ -28,4 +26,9 @@ const getProductById = asyncHandler(async (req, res) => {
     }
 });
 
-export { getAllproducts, getProductById }
+const getProductsByCategory = asyncHandler(async (req, res) => {
+    const products = await Product.find({category: req.params.category });
+    res.json(products);
+});
+
+export { getAllproducts, getProductById, getProductsByCategory }

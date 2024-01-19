@@ -1,23 +1,23 @@
 const products = [
   {
-    name: 'LG C3 65"',
+    name: 'LG C3 65" 4K TV',
     image: '../images/products/lgc3.jpg',
     description:
       'The LG C3 is a high-end smart TV that offers stunning visuals and advanced features. With its 4K OLED display, HDR support, and wide color gamut, it delivers breathtaking picture quality. The TV also features a powerful α9 Gen 2 processor, which provides seamless performance and smooth navigation. ',
     brand: 'LG',
-    category: 'TVs',
-    price: 1990.99,
+    category: "tvs",
+    price: 1999.99,
     countInStock: 5,
     rating: 4.9,
     numReviews: 11,
   },
   {
-    name: 'Samsung Galaxy s23',
+    name: 'Samsung Galaxy s23 Ultra',
     image: '../images/products/samsungs23.jpg',
     description:
       'The Samsung Galaxy S23 Ultra is a high-end Android smartphone with a massive 6.8-inch Dynamic AMOLED display, and a long-lasting 5000mAh battery. It features a quad-camera setup with a 108MP primary sensor and supports 8K video recording and 5G connectivity.',
     brand: 'Samsung',
-    category: 'Phones',
+    category: 'phones',
     price: 1399.99,
     countInStock: 15,
     rating: 3.8,
@@ -29,7 +29,7 @@ const products = [
     description:
       'With its 24.2MP APS-C sensor, Dual Pixel AF, and vari-angle touchscreen LCD, the 80D is perfect for capturing stunning images and videos in a variety of settings.',
     brand: 'Cannon',
-    category: 'Cameras',
+    category: 'cameras',
     price: 999.99,
     countInStock: 6,
     rating: 4,
@@ -41,7 +41,7 @@ const products = [
     description:
       'The HyperX Alpha cloud headphones are a top-notch gaming headset that offers exceptional sound quality, long-lasting comfort, and crystal-clear communication.',
     brand: 'HyperX',
-    category: 'Headphones',
+    category: 'sound',
     price: 99.99,
     countInStock: 22,
     rating: 5,
@@ -53,7 +53,7 @@ const products = [
     description:
       'The PlayStation 5 (PS5) is offering breathtaking graphics, lightning-fast load times, and immersive gameplay experiences. With its powerful AMD Zen 2 CPU and Radeon RDNA 2 GPU, the PS5 delivers stunning visuals and seamless performance, making it a must-have for any gaming enthusiast.',
     brand: 'Sony',
-    category: 'Gaming',
+    category: 'gaming',
     price: 599.99,
     countInStock: 3,
     rating: 4.8,
@@ -65,12 +65,84 @@ const products = [
     description:
       'The Nintendo Switch OLED is a powerful and portable gaming console that features a stunning 6.2-inch OLED display, delivering vibrant and crisp visuals on the go. With its innovative detachable Joy-Con controllers and a long-lasting battery, the Switch OLED offers an unparalleled gaming experience whether you are at home or on the go.',
     brand: 'Nintendo',
-    category: 'Gaming',
+    category: 'gaming',
     price: 299.99,
     countInStock: 20,
     rating: 5,
     numReviews: 22,
   },
+  {
+  name: 'Lenovo Legion 9i',
+  image: '../images/products/Lenovo_Legion.jpg',
+  description:
+    'This laptop is the world’s first 16-inch gaming laptop in the Lenovo Legion’s ecosystem, featuring a groundbreaking self-contained liquid-cooling system. It’s a game-changer in every sense. Equipped with a 13th Gen Intel® Core™ i9-13980HX processor and up to an NVIDIA® GeForce RTX™ 4090 Laptop GPU, it boasts remarkable processing power.',
+  brand: 'Lenovo',
+  category: 'computers',
+  price: 2999.99,
+  countInStock: 5,
+  rating: 4.9,
+  numReviews: 3,
+},
+{
+  name: 'Samsung Galaxy s23 Ultra',
+  image: '../images/products/samsungs23.jpg',
+  description:
+    'The Samsung Galaxy S23 Ultra is a high-end Android smartphone with a massive 6.8-inch Dynamic AMOLED display, and a long-lasting 5000mAh battery. It features a quad-camera setup with a 108MP primary sensor and supports 8K video recording and 5G connectivity.',
+  brand: 'Samsung',
+  category: 'phones',
+  price: 1399.99,
+  countInStock: 15,
+  rating: 3.8,
+  numReviews: 20,
+},
+{
+  name: 'Cannon EOS 80D',
+  image: '../images/products/canon80d.jpg',
+  description:
+    'With its 24.2MP APS-C sensor, Dual Pixel AF, and vari-angle touchscreen LCD, the 80D is perfect for capturing stunning images and videos in a variety of settings.',
+  brand: 'Cannon',
+  category: 'cameras',
+  price: 999.99,
+  countInStock: 6,
+  rating: 4,
+  numReviews: 5,
+},
+{
+  name: 'HyperX Cloud Alpha',
+  image: '../images/products/cloudAlpha.jpg',
+  description:
+    'The HyperX Alpha cloud headphones are a top-notch gaming headset that offers exceptional sound quality, long-lasting comfort, and crystal-clear communication.',
+  brand: 'HyperX',
+  category: 'sound',
+  price: 99.99,
+  countInStock: 22,
+  rating: 5,
+  numReviews: 10,
+},
+{
+  name: 'LG C3 65" 4K TV',
+  image: '../images/products/lgc3.jpg',
+  description:
+    'The LG C3 is a high-end smart TV that offers stunning visuals and advanced features. With its 4K OLED display, HDR support, and wide color gamut, it delivers breathtaking picture quality. The TV also features a powerful α9 Gen 2 processor, which provides seamless performance and smooth navigation. ',
+  brand: 'LG',
+  category: "tvs",
+  price: 1999.99,
+  countInStock: 5,
+  rating: 4.9,
+  numReviews: 11,
+},
+{
+  name: 'Lenovo Legion 9i',
+  image: '../images/products/Lenovo_Legion.jpg',
+  description:
+    'This laptop is the world’s first 16-inch gaming laptop in the Lenovo Legion’s ecosystem, featuring a groundbreaking self-contained liquid-cooling system. It’s a game-changer in every sense. Equipped with a 13th Gen Intel® Core™ i9-13980HX processor and up to an NVIDIA® GeForce RTX™ 4090 Laptop GPU, it boasts remarkable processing power.',
+  brand: 'Lenovo',
+  category: 'computers',
+  price: 2999.99,
+  countInStock: 5,
+  rating: 4.9,
+  numReviews: 3,
+},
 ]
 
 export default products
