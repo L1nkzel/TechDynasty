@@ -1,25 +1,20 @@
-import { useEffect, useState } from "react";
-import { Box, Grid} from "@mui/material";
+import { Box, Grid, Typography} from "@mui/material";
 import Product, { ProductType } from "../components/Product";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import { errorDisplayMessage } from "../components/errorDisplayMessage";
+import Message from "../components/Message";
+import { useGetProductsByCategoryQuery } from "../slices/productsApiSlice";
+
 const CategoryScreen = () => {
-
-const [products, setProducts] = useState<ProductType[]>([]);
-
-    const {category: category } = useParams();
-
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get(`/api/products/category/${category}`);
-      setProducts(data);
-    };
-    fetchProducts();
-  }, [category]);
+  const {category: category } = useParams();
+  const { isLoading, error, data: products } = useGetProductsByCategoryQuery(category);
 
   return (
-    <>
+    <> {isLoading ? (
+      <Typography>Loading...</Typography>
+    ) : error ? (
+      <Message severity="error">{errorDisplayMessage(error)}</Message>
+    ) : (
     
       <Box display={"flex"} justifyContent={"center"} mb={4}>
         <Grid
@@ -30,13 +25,14 @@ const [products, setProducts] = useState<ProductType[]>([]);
           rowSpacing={3}
           columnGap={2}
         >
-          {products.map((product) => (
+          {products.map((product: ProductType) => (
             <Grid item xs={8} sm={5} md={3} key={product._id}>
               <Product product={product}/>
             </Grid>
           ))}
         </Grid>
       </Box>
+         )}
     </>
   );
 };
