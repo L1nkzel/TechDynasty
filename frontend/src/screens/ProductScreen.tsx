@@ -5,22 +5,44 @@ import {
   CardMedia,
   Divider,
   Grid,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
-
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useGetProductByIdQuery } from "../slices/productsApiSlice";
 import Message from "../components/Message";
 import { errorDisplayMessage } from "../components/errorDisplayMessage";
+import { useState } from "react";
+import CustomSelect from "../components/CustomSelect";
+import { addToCart } from "../slices/shoppingCartSlice";
+import { useDispatch } from "react-redux";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const { isLoading, error, data: product } = useGetProductByIdQuery(productId);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [qty, setQty] = useState(1);
+
+  const addToCartHandler = () => {
+    dispatch(
+      addToCart({
+        ...product,
+        qty,
+      })
+    );
+    navigate("/cart");
+  };
+
+  const handleChange = (event: any) => {
+    setQty(event.target.value);
+  };
 
   return (
     <>
@@ -87,9 +109,27 @@ const ProductScreen = () => {
                   </Typography>
                 </Box>
                 <Divider sx={{ mt: 1, mb: 2 }} />
-                <Button variant="contained">Add To Cart</Button>
+                {/* Add to cart */}
+                {product.countInStock > 0 && (
+                  <Box>
+                    <CustomSelect value={qty} onChange={handleChange}>
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <MenuItem key={x + 1} value={x + 1}>
+                          {x + 1}
+                        </MenuItem>
+                      ))}
+                    </CustomSelect>
+                  </Box>
+                )}
+                <Button
+                  disabled={product.countInStock === 0}
+                  variant="contained"
+                  onClick={addToCartHandler}
+                >
+                  Add To Cart
+                </Button>
               </Card>
-
+            
               <Stack
                 spacing={1}
                 sx={{ my: 2, p: 2, background: "#f5f5f5", borderRadius: 2 }}
