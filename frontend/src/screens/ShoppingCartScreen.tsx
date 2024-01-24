@@ -13,12 +13,16 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigation } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ProductType } from "../components/Product";
+import { updateCartItemQty, removeFromCart } from "../slices/shoppingCartSlice";
 import Message from "../components/Message";
 
 const ShoppingCartScreen = () => {
+  const navigate = useNavigation();
+  const dispatch = useDispatch();
 
   const theme = createTheme({
     breakpoints: {
@@ -39,6 +43,17 @@ const ShoppingCartScreen = () => {
     .reduce((acc: any, item: any) => acc + item.qty * item.price, 0)
     .toFixed(2);
 
+    const updateCartHandler = async (item: ProductType, qty: number) => {
+        dispatch(updateCartItemQty({ ...item, qty }))
+    }
+
+    const removeFromCartHandler = async (item: ProductType) => {
+        dispatch(removeFromCart(item))
+
+    }
+    const checkoutHandler = () => {
+        
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -46,7 +61,7 @@ const ShoppingCartScreen = () => {
           <Grid item xs={9} sm={11} md={9} lg={8} >
             {cartItems.length === 0 ? (
                 <Message severity="info">
-                Your cart is empty <Link to='/'>Go Back</Link>
+                Your cart is empty<Link to='/'>Go Back</Link>
               </Message>
             ) : (
                 <Card sx={{ margin: 2, padding: 2 }}>
@@ -66,6 +81,7 @@ const ShoppingCartScreen = () => {
                           <Select
                             value={item.qty}
                             size="small"
+                            onChange={(e) => updateCartHandler(item, Number(e.target.value))}
                           >
                             {[...Array(item.countInStock).keys()].map((x) => (
                               <MenuItem key={x + 1} value={x + 1}>
@@ -77,7 +93,7 @@ const ShoppingCartScreen = () => {
                       </Grid>
                       <Grid item xxs={3} xs={1} sm={1} md={1}  sx={{ marginLeft: {xs: 0, sm: 0}  }}>${(item.price * item.qty).toFixed(2)}</Grid>
                       <Grid item xxs={1} xs={2} sm={1} md={1} lg={2} >
-                        <IconButton>
+                        <IconButton onClick={() => {removeFromCartHandler(item._id)}}>
                          <DeleteIcon />
                         </IconButton>
                       </Grid>
@@ -104,6 +120,7 @@ const ShoppingCartScreen = () => {
                     variant='contained'
                     color='primary'
                     disabled={cartItems.length === 0}
+                    onClick={() => {checkoutHandler()}}
                   >
                     Proceed To Checkout
                   </Button>

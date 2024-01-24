@@ -25,9 +25,30 @@ const shoppingCartSlice = createSlice({
             }
             return pricesInCart(state);
         },
+        updateCartItemQty : (state, action) => {
+            const item = action.payload;
+
+            const existingItem = state.cartItems.find(
+                (x: ProductType) => x._id === item._id);
+
+            if (existingItem) {
+                state.cartItems = state.cartItems.map(
+                    (x: ProductType) => x._id === existingItem._id ? item : x
+                )
+            } else {
+                state.cartItems = [...state.cartItems, item];
+            }
+            return pricesInCart(state);
+        },
+        removeFromCart: (state, action) => {
+            state.cartItems = state.cartItems.filter(
+                (x: ProductType) => x._id !== action.payload
+            )
+            return pricesInCart(state);
+        }
     },
 });
 
-export const { addToCart } = shoppingCartSlice.actions;
+export const { addToCart, updateCartItemQty, removeFromCart } = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;
