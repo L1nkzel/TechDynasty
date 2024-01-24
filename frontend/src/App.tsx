@@ -6,8 +6,11 @@ import { Outlet } from "react-router-dom";
 const App = () => {
   return (
     <>
-      <Header />
-      <Box minHeight="82vh">
+      <Header/>
+      <Box
+        minHeight="82vh"
+        sx={{ mt: {xs: 7, sm: 10 }}}
+      >
         <Outlet />
       </Box>
       <Footer />
