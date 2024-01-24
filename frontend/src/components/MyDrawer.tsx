@@ -9,11 +9,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  Stack,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
-import Close from "@mui/icons-material/Close";
 
 export function MyDrawer() {
   const [open, setOpen] = useState(false);
@@ -25,7 +23,7 @@ export function MyDrawer() {
   return (
     <Box>
       <IconButton style={{ color: "white" }} onClick={handleClick}>
-        <MenuIcon />
+        <MenuIcon sx={{ fontSize: { xxs: 22, xs: 28, sm: 32 }}}/>
       </IconButton>
       <Drawer
         open={open}

@@ -37,7 +37,7 @@ const ProductScreen = () => {
         qty,
       })
     );
-    navigate("/cart");
+    navigate("/shopping-cart");
   };
 
   const handleChange = (event: any) => {
@@ -45,9 +45,9 @@ const ProductScreen = () => {
   };
 
   return (
-    <>
+    <Box p={1}>
       {isLoading ? (
-        <Typography>Loading...</Typography>
+        <Typography variant="h4">Loading...</Typography>
       ) : error ? (
         <Message severity="error">{errorDisplayMessage(error)}</Message>
       ) : (
@@ -158,7 +158,7 @@ const ProductScreen = () => {
           </Grid>
         </>
       )}
-    </>
+    </Box>
   );
 };
 

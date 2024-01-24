@@ -7,7 +7,7 @@ const HomeScreen = () => {
   const { isLoading, error, data: products } = useGetProductsQuery({});
 
   return (
-    <>
+    <Box p={1}>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : error ? (
@@ -35,7 +35,7 @@ const HomeScreen = () => {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
 };
 
