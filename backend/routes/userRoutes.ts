@@ -12,17 +12,18 @@ import {
     getUserById,
     updateUser,
 } from "../controllers/userController";
+import { protect, admin } from "../middleware/authMiddleware";
 
-router.route("/").post(registerUser).get(getUsers);
+router.route("/").post(registerUser).get(protect, admin, getUsers);
 router.route("/login").post(authUser);
-router.route("/logout").post(logoutUser);
+router.route("/logout").get(logoutUser);
 router.route("/profile")
-    .get(getUserProfile)
-    .put(updateUserProfile);
+    .get(protect, getUserProfile) 
+    .put(protect, updateUserProfile);
 router.route("/:id")
-.get(getUserById)
-.delete(deleteUser)
-.put(updateUser);
+.get(protect, admin, getUserById)
+.delete(protect, admin, deleteUser)
+.put(protect, admin, updateUser);
 
 
 export default router;

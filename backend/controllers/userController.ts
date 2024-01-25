@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler";
 import User from "../models/userModel";
+import jwt from "jsonwebtoken";
 import { UserTypes } from "../types";
 
 /* @desc   Authenticate a user and get token
@@ -11,6 +12,18 @@ const authUser = asyncHandler(async (req, res) => {
     const user: UserTypes | null = await User.findOne({ email }); // find user by email in database
 
     if (user && (await user.matchPassword(password))) { // if user exists then send user data to frontend
+       const token = jwt.sign({ userId: user._id }, process.env.
+        JWT_SECRET!, 
+        { expiresIn: "30d" });
+
+        // set cookie with token in browser
+        res.cookie("jwt", token, {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === "production", // set secure to true if in production mode else false
+            sameSite: "strict",
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        });
+        
         res.json({
             _id: user._id,
             name: user.name,
@@ -36,7 +49,10 @@ const registerUser = asyncHandler(async (req, res) => {
  * @route  POST /api/users/logout
  * @access Public */
 const logoutUser = asyncHandler(async (req, res) => {
-    res.send("logout user");
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        expires: new Date(0),
+    });
 
     res.json({ message: "Successfully logged out" });
 });
