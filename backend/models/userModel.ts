@@ -18,6 +18,16 @@ userSchema.methods.matchPassword = async function (passwordToCheck: string) {
     return isMatch; 
 };
 
+// Encrypt password before saving to database
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) { // if password is not modified then skip encrypting 
+        next();
+    } else {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    };
+})
+
 const User = mongoose.model<UserTypes>('User', userSchema,);
 
 export default User;
