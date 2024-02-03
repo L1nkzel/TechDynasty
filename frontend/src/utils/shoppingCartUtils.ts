@@ -1,10 +1,4 @@
-export interface ShoppingCartState {
-    cartItems: { price: number, qty: number }[]; 
-    priceOfItems: number;
-    shippingCost: number;
-    taxAmount: number;
-    finalPrice: number;
-}
+import { ShoppingCartState } from "../types";
 
 export const pricesInCart = (state: ShoppingCartState) => {
     const roundToTwoDecimals = (num: number) => parseFloat((Math.round(num * 100) / 100).toFixed(2));

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { pricesInCart } from "../utils/shoppingCartUtils";
-import { ProductType } from "../components/Product";
+import { ProductType } from "../types";
 
 
 const cartData = localStorage.getItem("cart");
