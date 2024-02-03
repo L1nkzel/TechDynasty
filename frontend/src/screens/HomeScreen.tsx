@@ -1,8 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
-import Product, { ProductType } from "../components/Product";
+import Product from "../components/Product";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 import Message from "../components/Message";
 import { errorDisplayMessage } from "../components/errorDisplayMessage";
+import { ProductType } from "../types";
 const HomeScreen = () => {
   const { isLoading, error, data: products } = useGetProductsQuery({});
 

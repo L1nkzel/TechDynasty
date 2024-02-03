@@ -2,18 +2,8 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
+import { ProductType } from "../types";
 
-export interface ProductType {
-  image: string;
-  name: string;
-  price: number;
-  _id: string;
-  rating: number;
-  numReviews: number;
-  category: string;
-  countInStock: number;
-  description: string;
-}
 
 const Product: FunctionComponent<{ product: ProductType }> = ({ product }) => {
   return (
