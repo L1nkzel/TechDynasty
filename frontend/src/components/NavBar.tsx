@@ -1,67 +1,39 @@
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {
   Box,
   Stack,
   IconButton,
-  createTheme,
   ThemeProvider,
   Typography,
   Button,
   Badge,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import UserIcon from "@mui/icons-material/Person";
-import Colors from "../assets/styles/Colors";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { MyDrawer } from "./MyDrawer";
-import { useSelector } from "react-redux";
-
-declare module "@mui/material/styles" {
-  interface BreakpointOverrides {
-    xxs: true;
-    xs: true;
-    sm: true;
-    md: true;
-    lg: true;
-    xl: true;
-  }
-}
-
-// Using Inline Styling
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "fixed",
-    justifyContent: "center",
-    [theme.breakpoints.up("sm")]: {
-      height: 80,
-    },
-
-    background: Colors.header100,
-  },
-}));
+import { useDispatch, useSelector } from "react-redux";
+import LoginRegisterModal from "./LoginRegisterModal";
+import CustomButton from "./CustomButton";
+import { CustomAppBar, theme } from "../assets/styles/styles";
+import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
 
 export default function NavBar() {
   const { cartItems } = useSelector((state: any) => state.shoppingCart);
-  const classes = useStyles();
-  const theme = createTheme({
-    breakpoints: {
-      values: {
-        xxs: 0,
-        xs: 400,
-        sm: 600,
-        md: 900,
-        lg: 1200,
-        xl: 1536,
-      },
-    },
-  });
+  const { userInfo } = useSelector((state: any) => state.auth);
+  const { open, isRegistered } = useSelector(
+    (state: any) => state.loginRegister
+  );
+  const dispatch = useDispatch();
+
+  const handleOpen = () => {
+    dispatch(setOpen(true));
+    dispatch(setIsRegistered(false));
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar className={classes.root}>
+      <CustomAppBar>
         <Toolbar>
           {/* Drawer */}
           <MyDrawer />
@@ -108,34 +80,42 @@ export default function NavBar() {
                     </Typography>
                   </Box>
                 </Button>
-                <Button href="/" color="inherit">
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <UserIcon />
-                    <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17 } }}>
-                      Log in
-                    </Typography>
-                  </Box>
-                </Button>
               </Box>
               <Box sx={{ display: { xxs: "block", sm: "none" } }}>
                 <IconButton href="/shopping-cart" color="inherit">
-                  <Badge badgeContent={cartItems.length} color="warning">
-                    <ShoppingCartIcon sx={{ fontSize: { xxs: 20 } }} />
+                  <Badge
+                    sx={{ fontSize: 10 }}
+                    badgeContent={cartItems.reduce(
+                      (a: number, c: any) => a + c.qty,
+                      0
+                    )}
+                    color="warning"
+                  >
+                    <ShoppingCartIcon sx={{ fontSize: { xxs: 22 } }} />
                   </Badge>
                 </IconButton>
-                <IconButton href="/" color="inherit">
-                  <UserIcon sx={{ fontSize: { xxs: 20 } }} />
-                </IconButton>
               </Box>
+              {userInfo ? (
+                <Button color="inherit">
+                  <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17 } }}>
+                    {userInfo.name}
+                  </Typography>
+                </Button>
+              ) : (
+                <>
+                  <CustomButton onClick={handleOpen} />
+                  <LoginRegisterModal
+                    open={open}
+                    setOpen={setOpen}
+                    isRegistered={isRegistered}
+                    setIsRegistered={setIsRegistered}
+                  />
+                </>
+              )}
             </Stack>
           </Box>
         </Toolbar>
-      </AppBar>
+      </CustomAppBar>
     </ThemeProvider>
   );
 }
