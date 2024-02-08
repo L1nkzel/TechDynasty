@@ -2,7 +2,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {
   Box,
   Stack,
-  IconButton,
   ThemeProvider,
   Typography,
   Button,
@@ -17,19 +16,48 @@ import LoginRegisterModal from "./LoginRegisterModal";
 import CustomButton from "./CustomButton";
 import { CustomAppBar, theme } from "../assets/styles/styles";
 import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
+import { Person } from "@mui/icons-material";
+import AccountMenu from "./AccountMenu";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../slices/authSlice";
+import { useLogoutMutation } from "../slices/usersApiSlice";
 
 export default function NavBar() {
   const { cartItems } = useSelector((state: any) => state.shoppingCart);
   const { userInfo } = useSelector((state: any) => state.auth);
   const { open, isRegistered } = useSelector(
-    (state: any) => state.loginRegister
+  (state: any) => state.loginRegister
   );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openAnchor = Boolean(anchorEl);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [logoutUserApiCall] : any = useLogoutMutation();
 
+  
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
   const handleOpen = () => {
     dispatch(setOpen(true));
     dispatch(setIsRegistered(false));
   };
+  
+  const handleLogout = async () => {
+    try {
+      await logoutUserApiCall().unwrap();
+      dispatch(logout({}));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -44,6 +72,8 @@ export default function NavBar() {
                 component="img"
                 src={Logo}
                 sx={{ maxWidth: { xxs: 120, xs: 180, sm: 230 } }}
+                alt="TechDynasty Logo"
+                loading="lazy"
               />
             </Link>
 
@@ -55,7 +85,7 @@ export default function NavBar() {
               flexGrow={1}
             >
               <Box sx={{ display: { xxs: "none", sm: "block" } }}>
-                <Button href="/shopping-cart" color="inherit">
+                <Button sx={{ ":hover": { backgroundColor: "transparent" } }} disableRipple href="/shopping-cart" color="inherit">
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -75,35 +105,27 @@ export default function NavBar() {
                     ) : (
                       <ShoppingCartIcon />
                     )}
-                    <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17 } }}>
+                    <Typography>
                       Cart
                     </Typography>
                   </Box>
                 </Button>
               </Box>
-              <Box sx={{ display: { xxs: "block", sm: "none" } }}>
-                <IconButton href="/shopping-cart" color="inherit">
-                  <Badge
-                    sx={{ fontSize: 10 }}
-                    badgeContent={cartItems.reduce(
-                      (a: number, c: any) => a + c.qty,
-                      0
-                    )}
-                    color="warning"
-                  >
-                    <ShoppingCartIcon sx={{ fontSize: { xxs: 22 } }} />
-                  </Badge>
-                </IconButton>
+              <Box sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}>
+                <CustomButton iconMobile={<ShoppingCartIcon />} text="Cart" href="/shopping-cart"/>
               </Box>
+
+
               {userInfo ? (
-                <Button color="inherit">
-                  <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17 } }}>
-                    {userInfo.name}
-                  </Typography>
-                </Button>
+              // Logged in user
+              <>
+                <CustomButton icon={<Person />} text="Profile" iconMobile={<Person />} onClick={handleClick}/>
+                <AccountMenu openAnchor={openAnchor} anchorEl={anchorEl} handleClose={handleClose} handleLogout={handleLogout}/>
+                </>
               ) : (
+                /* Logged out user */
                 <>
-                  <CustomButton onClick={handleOpen} />
+                  <CustomButton icon={<Person />} text="Log in" iconMobile={<Person />}  onClick={handleOpen} />
                   <LoginRegisterModal
                     open={open}
                     setOpen={setOpen}

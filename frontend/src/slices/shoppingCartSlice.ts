@@ -10,7 +10,7 @@ const shoppingCartSlice = createSlice({
     name: "shoppingCart",
     initialState,
     reducers: {
-        addToCart: (state, action) => {
+        addToCart: (state: any, action) => {
             const item = action.payload;
 
             const existingItem = state.cartItems.find(
@@ -25,7 +25,7 @@ const shoppingCartSlice = createSlice({
             }
             return pricesInCart(state);
         },
-        updateCartItemQty : (state, action) => {
+        updateCartItemQty : (state: any, action) => {
             const item = action.payload;
 
             const existingItem = state.cartItems.find(
@@ -40,7 +40,7 @@ const shoppingCartSlice = createSlice({
             }
             return pricesInCart(state);
         },
-        removeFromCart: (state, action) => {
+        removeFromCart: (state: any, action) => {
             state.cartItems = state.cartItems.filter(
                 (x: ProductType) => x._id !== action.payload
             )

@@ -11,6 +11,8 @@ type PasswordFieldsProps = {
   password: string;
   id: string;
   label: string;
+  error: boolean;
+  helperText?: any;
   onChange: (value: string) => void;
 };
 
@@ -18,6 +20,8 @@ const PasswordFields = ({
   password,
   id,
   label,
+  error,
+  helperText,
   onChange,
 }: PasswordFieldsProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +45,8 @@ const PasswordFields = ({
         value={password}
         onChange={handleChange}
         type={showPassword ? "text" : "password"}
+        error={error}
+        helperText={helperText}
         fullWidth
         label={label}
         placeholder={label}
