@@ -1,7 +1,4 @@
-import {
-  Close,
-  Email,
-} from "@mui/icons-material";
+import { Close, Email } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -11,24 +8,16 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../assets/logo.png";
 import { ThemeProvider } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
-import { useNavigate } from "react-router-dom";
+import { ErrorResponse, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../slices/usersApiSlice";
-import { setUserInfo } from "../slices/authSlice";
+import { useLoginMutation, useRegisterMutation } from "../slices/usersApiSlice";
+import { setUserInfo, registerUser } from "../slices/authSlice";
 import PasswordFields from "./PasswordFields";
 import { Colors, CustomTextField, theme } from "../assets/styles/styles";
-
-
-interface ErrorResponse {
-  data: {
-    message: string;
-  };
-  error: string;
-}
 
 const LoginRegisterModal = ({
   open,
@@ -49,23 +38,51 @@ const LoginRegisterModal = ({
     password: "",
     confirmPassword: "",
   });
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailIsValid, setEmailIsValid] = useState(true);
+  const [nameIsEmpty, setNameIsEmpty] = useState(false);
+  const [userExists, setUserExists] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+  const [register] = useRegisterMutation();
+
+  const resetFormData = () => {
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setPasswordError(false);
+    setPasswordsMatch(true);
+    setNameIsEmpty(false);
+    setEmailIsValid(true);
+    setUserExists(false);
+  };
 
   const handleClose = () => {
     dispatch(setOpen(false));
+    resetFormData();
   };
 
   const toggleRegistration = () => {
     dispatch(setIsRegistered(!isRegistered));
+    resetFormData();
+  };
+  
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
   };
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+
     try {
       const res = await login({
-        email: formData.email,
+        email: formData.email.toLowerCase(),
         password: formData.password,
       }).unwrap();
       dispatch(setUserInfo({ ...res }));
@@ -73,11 +90,61 @@ const LoginRegisterModal = ({
         navigate("/shipping");
       }
       dispatch(setOpen(false));
-    } catch (err: ErrorResponse | any) {}
+    } catch (error: ErrorResponse | any) {
+      if (error.status === 401) {
+        setEmailIsValid(false);
+        setPasswordError(true);
+        return;
+      } else {
+        console.log(error);
+      }
+    }
   };
 
-  const handleRegister = () => {
-    console.log("Registration clicked");
+  const handleRegister = async (e: any) => {
+    e.preventDefault();
+
+    // Validate form data
+    const isNameEmpty = formData.name === "";
+    const isEmailValid = formData.email === "" ? false : isValidEmail(formData.email);
+    const isPasswordError = formData.password === "" || formData.password.length < 6;
+    const doPasswordsMatch = formData.password === formData.confirmPassword;
+
+    // Update state with validation results
+    setNameIsEmpty(isNameEmpty);
+    setEmailIsValid(isEmailValid);
+    setPasswordError(isPasswordError);
+    setPasswordsMatch(doPasswordsMatch);
+
+    // Check if there are any validation errors
+    if (isNameEmpty || !isEmailValid || isPasswordError || !doPasswordsMatch) {
+      return;
+    }
+
+    try {
+      const registerResponse = await register({
+        name: formData.name,
+        email: formData.email.toLowerCase(),
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      }).unwrap();
+
+      // Registration successful
+      dispatch(registerUser({ ...registerResponse }));
+      dispatch(setOpen(false));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      }));
+    } catch (error: ErrorResponse | any) {
+      if (error.data.message === "User already exists") {
+        setUserExists(true);
+        console.log("User exists:", userExists);
+      }
+    }
   };
 
   return (
@@ -139,6 +206,8 @@ const LoginRegisterModal = ({
               label="Name"
               placeholder="Name"
               required
+              error={isRegistered && nameIsEmpty}
+              helperText={isRegistered && nameIsEmpty && "Name cannot be empty"}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -158,6 +227,15 @@ const LoginRegisterModal = ({
             label="Email"
             placeholder="Email"
             required
+            error={
+              (isRegistered && userExists) ||
+              (isRegistered && !emailIsValid) ||
+              (!isRegistered && passwordError)
+            } 
+            helperText={
+              (isRegistered && userExists && "User already exists") ||
+              (isRegistered && !emailIsValid ? "Invalid Email Format" : "")
+            } 
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -175,6 +253,13 @@ const LoginRegisterModal = ({
               },
               id: "password",
               label: "Password",
+              error:
+                (isRegistered && (!passwordsMatch || passwordError)) ||
+                (!isRegistered && passwordError),
+              helperText:
+                !isRegistered &&
+                passwordError &&
+                "Email or Password is invalid",
             }}
           />
           {isRegistered && (
@@ -186,6 +271,13 @@ const LoginRegisterModal = ({
                 },
                 id: "confirmPassword",
                 label: "Confirm Password",
+                error: isRegistered && (!passwordsMatch || passwordError),
+                helperText:
+                  isRegistered && !passwordsMatch
+                    ? "Passwords do not match"
+                    : "" || (isRegistered && passwordError)
+                    ? "Password must be at least 6 characters"
+                    : "",
               }}
             />
           )}

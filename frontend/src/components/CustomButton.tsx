@@ -5,45 +5,48 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { Person as UserIcon } from "@mui/icons-material";
 import { theme } from "../assets/styles/styles";
 interface CustomButtonProps {
-  onClick: () => void;
+  onClick?: any;
+  href?: string;
+  icon?: JSX.Element;
+  iconMobile?: JSX.Element;
+  text: string;
 }
 
-const CustomButton = ({ onClick }: CustomButtonProps) => {
+const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonProps) => {
   const minWidth = useMediaQuery(theme.breakpoints.up("sm"));
 
   if (minWidth) {
     return (
-      <Button onClick={onClick} color="inherit">
+      <Button sx={{ ":hover": { backgroundColor: "transparent" } }} disableRipple href={href} onClick={onClick} color="inherit">
         {" "}
-        {/* Return a regular button */}
         <Box
           display="flex"
           flexDirection="column"
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <UserIcon />
-          <Typography sx={{ fontSize: { xxs: 13, xs: 13, sm: 17 } }}>
-            Log in
+          {icon}
+          <Typography >
+            {text}
           </Typography>
         </Box>
       </Button>
     );
   } else {
     return (
-      <IconButton onClick={onClick} color="inherit">
+      <IconButton href={href!} onClick={onClick} color="inherit">
         {" "}
-        {/* Return an icon button */}
         <Box
           display="flex"
           flexDirection="column"
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <UserIcon sx={{ fontSize: { xxs: 22 } }} />
+          <Box sx={{ fontSize: { xxs: 10 } }} >
+            {iconMobile}
+          </Box>
         </Box>
       </IconButton>
     );
