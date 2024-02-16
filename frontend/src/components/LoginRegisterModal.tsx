@@ -8,11 +8,11 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Logo from "../assets/logo.png";
 import { ThemeProvider } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
-import { ErrorResponse, useNavigate } from "react-router-dom";
+import { ErrorResponse } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation, useRegisterMutation } from "../slices/usersApiSlice";
 import { setUserInfo, registerUser } from "../slices/authSlice";
@@ -25,12 +25,16 @@ const LoginRegisterModal = ({
   isRegistered,
   setIsRegistered,
   redirectUrl,
+  setExpandedPanel,
+  context
 }: {
   open: boolean;
   setOpen: any;
   isRegistered: boolean;
   setIsRegistered: any;
   redirectUrl?: string;
+  setExpandedPanel?: any;
+  context?: string
 }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -44,7 +48,6 @@ const LoginRegisterModal = ({
   const [nameIsEmpty, setNameIsEmpty] = useState(false);
   const [userExists, setUserExists] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
 
@@ -86,9 +89,14 @@ const LoginRegisterModal = ({
         password: formData.password,
       }).unwrap();
       dispatch(setUserInfo({ ...res }));
-      if (redirectUrl === "/shopping-cart") {
-        navigate("/shipping");
+
+      if (redirectUrl === "/checkout" && context === "checkoutCartLogin") {
+        setExpandedPanel("panel2");
+        console.log(context);
+      } else {
+        setExpandedPanel("panel1");
       }
+     
       dispatch(setOpen(false));
     } catch (error: ErrorResponse | any) {
       if (error.status === 401) {
@@ -205,7 +213,7 @@ const LoginRegisterModal = ({
               autoFocus
               label="Name"
               placeholder="Name"
-              required
+            
               error={isRegistered && nameIsEmpty}
               helperText={isRegistered && nameIsEmpty && "Name cannot be empty"}
               InputProps={{
@@ -221,7 +229,7 @@ const LoginRegisterModal = ({
             name="email"
             value={formData.email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setFormData({ ...formData, email: e.target.value }) 
             }
             fullWidth
             label="Email"
