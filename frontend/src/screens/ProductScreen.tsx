@@ -37,7 +37,7 @@ const ProductScreen = () => {
         qty,
       })
     );
-    navigate("/shopping-cart");
+    navigate("/checkout");
   };
 
   const handleChange = (event: any) => {

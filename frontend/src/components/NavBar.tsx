@@ -27,27 +27,28 @@ export default function NavBar() {
   const { cartItems } = useSelector((state: any) => state.shoppingCart);
   const { userInfo } = useSelector((state: any) => state.auth);
   const { open, isRegistered } = useSelector(
-  (state: any) => state.loginRegister
+    (state: any) => state.loginRegister
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openAnchor = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [logoutUserApiCall] : any = useLogoutMutation();
+  const [logoutUserApiCall]: any = useLogoutMutation();
 
-  
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    if (anchorEl !== event.currentTarget) {
+      setAnchorEl(event.currentTarget);
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const handleOpen = () => {
     dispatch(setOpen(true));
     dispatch(setIsRegistered(false));
   };
-  
+
   const handleLogout = async () => {
     try {
       await logoutUserApiCall().unwrap();
@@ -56,8 +57,7 @@ export default function NavBar() {
     } catch (error) {
       console.log(error);
     }
-  }
-  
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,7 +85,12 @@ export default function NavBar() {
               flexGrow={1}
             >
               <Box sx={{ display: { xxs: "none", sm: "block" } }}>
-                <Button sx={{ ":hover": { backgroundColor: "transparent" } }} disableRipple href="/shopping-cart" color="inherit">
+                <Button
+                  sx={{ ":hover": { backgroundColor: "transparent" } }}
+                  disableRipple
+                  href="/checkout"
+                  color="inherit"
+                >
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -105,28 +110,46 @@ export default function NavBar() {
                     ) : (
                       <ShoppingCartIcon />
                     )}
-                    <Typography>
-                      Cart
-                    </Typography>
+                    <Typography>Cart</Typography>
                   </Box>
                 </Button>
               </Box>
               <Box sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}>
-                <CustomButton iconMobile={<ShoppingCartIcon />} text="Cart" href="/shopping-cart"/>
+                <CustomButton
+                  iconMobile={<ShoppingCartIcon />}
+                  text="Cart"
+                  href="/checkout"
+                      
+                />
               </Box>
 
-
               {userInfo ? (
-              // Logged in user
-              <>
-                <CustomButton icon={<Person />} text="Profile" iconMobile={<Person />} onClick={handleClick}/>
-                <AccountMenu openAnchor={openAnchor} anchorEl={anchorEl} handleClose={handleClose} handleLogout={handleLogout}/>
-                </>
+                // Logged in user
+                <Box>
+                  <CustomButton
+                    icon={<Person />}
+                    text="Profile"
+                    iconMobile={<Person />}
+                    onClick={handleClick}
+                  />
+                  <AccountMenu
+                    openAnchor={openAnchor}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    handleLogout={handleLogout}
+                  />
+                </Box>
               ) : (
                 /* Logged out user */
                 <>
-                  <CustomButton icon={<Person />} text="Log in" iconMobile={<Person />}  onClick={handleOpen} />
+                  <CustomButton
+                    icon={<Person />}
+                    text="Log in"
+                    iconMobile={<Person />}
+                    onClick={handleOpen}
+                  />
                   <LoginRegisterModal
+                    redirectUrl="/checkout"
                     open={open}
                     setOpen={setOpen}
                     isRegistered={isRegistered}
