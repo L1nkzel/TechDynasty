@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApiSlice";
+import { resetCart } from "../slices/shoppingCartSlice";
 
 export default function NavBar() {
   const { cartItems } = useSelector((state: any) => state.shoppingCart);
@@ -49,15 +50,19 @@ export default function NavBar() {
     dispatch(setIsRegistered(false));
   };
 
+
   const handleLogout = async () => {
     try {
       await logoutUserApiCall().unwrap();
       dispatch(logout({}));
+      dispatch(resetCart());
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+
 
   return (
     <ThemeProvider theme={theme}>

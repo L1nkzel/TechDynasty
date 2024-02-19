@@ -4,7 +4,7 @@ import { ProductType } from "../types";
 
 
 const cartData = localStorage.getItem("cart");
-const initialState = cartData ? JSON.parse(cartData) : { cartItems: [] };
+const initialState = cartData ? JSON.parse(cartData) : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
 
 const shoppingCartSlice = createSlice({
     name: "shoppingCart",
@@ -25,7 +25,7 @@ const shoppingCartSlice = createSlice({
             }
             return pricesInCart(state);
         },
-        updateCartItemQty : (state: any, action) => {
+        updateCartItemQty: (state: any, action) => {
             const item = action.payload;
 
             const existingItem = state.cartItems.find(
@@ -45,10 +45,23 @@ const shoppingCartSlice = createSlice({
                 (x: ProductType) => x._id !== action.payload
             )
             return pricesInCart(state);
-        }
+        },
+        saveShippingAddress: (state: any, action) => {
+            state.shippingAddress = action.payload;
+            return pricesInCart(state);
+        },
+        savePaymentMethod: (state: any, action) => {
+            state.paymentMethod = action.payload;
+            return pricesInCart(state);
+        },
+        resetCart: (state) => {
+            state.cartItems = [];
+            state.shippingAddress = {};
+        },
+        
     },
 });
 
-export const { addToCart, updateCartItemQty, removeFromCart } = shoppingCartSlice.actions;
+export const { addToCart, updateCartItemQty, removeFromCart, saveShippingAddress, savePaymentMethod, clearCartItems, resetCart } = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

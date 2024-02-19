@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const loginRegisterSlice = createSlice({
+const loginRegisterSlice = createSlice({
   name: 'loginRegister',
   initialState: {
     isRegistered: false,

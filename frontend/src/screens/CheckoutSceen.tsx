@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ShoppingCart from "../components/ShoppingCart";
-import { updateCartItemQty, removeFromCart } from "../slices/shoppingCartSlice";
+import { updateCartItemQty, removeFromCart, saveShippingAddress } from "../slices/shoppingCartSlice";
 import LoginRegisterModal from "../components/LoginRegisterModal";
 import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
 import { ProductType } from "../types";
@@ -24,14 +24,18 @@ import {
   Person,
   Payment as PaymentIcon,
 } from "@mui/icons-material";
+import PaymentMethod from "../components/PaymentMethod";
 
 const CheckoutSceen = () => {
   const { userInfo } = useSelector((state: any) => state.auth);
   const [expanded, setExpanded] = useState<string | false>("panel1");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  const cart = useSelector((state: any) => state.shoppingCart);
+
+  const { cartItems, shippingAddress } = cart;
+  const [address, setAddress] = useState(shippingAddress?.address || "");
+  const [city, setCity] = useState(shippingAddress?.city || "");
+  const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || "");
+  const [country, setCountry] = useState(shippingAddress?.country || "");
 
   //error states for delivery info form
   const [isAddressEmpty, setIsAddressEmpty] = useState(false);
@@ -39,9 +43,8 @@ const CheckoutSceen = () => {
   const [isPostalCodeEmpty, setIsPostalCodeEmpty] = useState(false);
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
 
-  const cart = useSelector((state: any) => state.shoppingCart);
 
-  const { cartItems } = cart;
+
   const priceOfItems = cartItems
     .reduce((acc: any, item: any) => acc + item.qty * item.price, 0)
     .toFixed(2);
@@ -56,7 +59,7 @@ const CheckoutSceen = () => {
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      if (userInfo) {
+      if (userInfo && cartItems.length > 0) {
         // Check if any address field is empty
         const areFieldsEmpty =
           address === "" || city === "" || postalCode === "" || country === "";
@@ -90,18 +93,22 @@ const CheckoutSceen = () => {
     dispatch(removeFromCart(item));
   };
 
-  const deliveryInfoHandler = () => {
+  const deliveryInfoHandler = (e: any) => {
+    e.preventDefault();
     // Check if any address field is empty
     setIsAddressEmpty(address === "");
     setIsCityEmpty(city === "");
     setIsPostalCodeEmpty(postalCode === "");
     setIsCountryEmpty(country === "");
-
+    
     // If any field is empty, prevent expanding to panel3
     const areFieldsEmpty =
-      address === "" || city === "" || postalCode === "" || country === "";
-
+    address === "" || city === "" || postalCode === "" || country === "";
+    
     setExpanded(areFieldsEmpty ? "panel2" : "panel3");
+    if (!areFieldsEmpty) {
+      dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    }
   };
 
   return (
@@ -207,11 +214,11 @@ const CheckoutSceen = () => {
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>Payment Method</Typography>
+                <PaymentMethod />
               </AccordionDetails>
             </Accordion>
           </Grid>
-          <Grid item xxxs={12} xxs={10} xs={8} sm={10} md={8} lg={3} m={4}>
+          <Grid item xxxs={12} xxs={10} xs={8} sm={10} md={8} lg={3.5} m={4}>
             <Box position={"sticky"} top={"100px"}>
               <Typography
                 variant="h5"
@@ -229,8 +236,9 @@ const CheckoutSceen = () => {
                     gap: 1,
                   }}
                 >
-                  {cartItems.map((item: any) => (
+                  {cartItems.map((item: any, index: number) => (
                     <Box
+                      key={index}
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -242,6 +250,7 @@ const CheckoutSceen = () => {
                         sx={{
                           fontSize: { xxxs: 14, xxs: 14, sm: 14, md: 16 },
                           fontWeight: "bold",
+                          marginRight: 1
                         }}
                       >
                         {item.qty} x {item.name}

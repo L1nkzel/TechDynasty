@@ -9,6 +9,7 @@ const initialState: AuthState = {
         .getItem("userInfo") as string) : null,
 };
 
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -23,7 +24,7 @@ const authSlice = createSlice({
         },
         logout: (state, action) => {
             state.userInfo = null;
-            localStorage.removeItem("userInfo");
+            localStorage.clear();
         },
     },
 });
