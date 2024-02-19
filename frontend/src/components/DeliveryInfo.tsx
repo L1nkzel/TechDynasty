@@ -16,7 +16,7 @@ const DeliveryInfo = ({
   country,
   setCountry,
 }: {
-  deliveryInfoHandler: () => void;
+  deliveryInfoHandler: (e: any) => void,
   isFieldEmpty: boolean;
   address: string;
   setAddress: any;
