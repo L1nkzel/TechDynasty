@@ -28,7 +28,7 @@ const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonPro
           justifyContent={"center"}
         >
           {icon}
-          <Typography >
+          <Typography sx={{textTransform: "none", fontFamily: "Montserrat", fontWeight: 500, fontSize:18 }}>
             {text}
           </Typography>
         </Box>
@@ -44,7 +44,7 @@ const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonPro
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Box sx={{ fontSize: { xxs: 10 } }} >
+          <Box sx={{ fontSize: { xxs: 10 }}} >
             {iconMobile}
           </Box>
         </Box>

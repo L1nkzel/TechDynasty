@@ -161,7 +161,7 @@ const LoginRegisterModal = ({
       <Dialog
         PaperProps={{
           sx: {
-            background: `linear-gradient(to top, ${Colors.modal100}, #FBFBFB)`,
+            background: `linear-gradient(to top, ${Colors.modal}, #FBFBFB)`,
             width: 400,
             borderRadius: 2,
           },
@@ -177,7 +177,7 @@ const LoginRegisterModal = ({
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            bgcolor: Colors.header100,
+            bgcolor: Colors.primary,
             p: { xxs: 0.8, xs: 1.5 },
           }}
         >

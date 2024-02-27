@@ -1,8 +1,9 @@
-import { Box, Button, FormControl} from "@mui/material";
+import { Box, Button, FormControl } from "@mui/material";
 import {
+  Colors,
   CustomTextField,
   DeliveryInfoContainer,
-} from "../assets/styles/styles";
+} from "../../assets/styles/styles";
 
 const DeliveryInfo = ({
   deliveryInfoHandler,
@@ -16,7 +17,7 @@ const DeliveryInfo = ({
   country,
   setCountry,
 }: {
-  deliveryInfoHandler: (e: any) => void,
+  deliveryInfoHandler: (e: any) => void;
   isFieldEmpty: boolean;
   address: string;
   setAddress: any;
@@ -27,8 +28,6 @@ const DeliveryInfo = ({
   country: string;
   setCountry: any;
 }) => {
-
-
   return (
     <Box>
       <DeliveryInfoContainer>
@@ -52,7 +51,7 @@ const DeliveryInfo = ({
             value={city}
             onChange={(e) => setCity(e.target.value)}
             error={isFieldEmpty && !city}
-            helperText={isFieldEmpty && !city  && "* City is required"}
+            helperText={isFieldEmpty && !city && "* City is required"}
             required
             InputLabelProps={{ shrink: true }}
           />
@@ -64,7 +63,9 @@ const DeliveryInfo = ({
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             error={isFieldEmpty && !postalCode}
-            helperText={isFieldEmpty && !postalCode && "* Postal Code is required"}
+            helperText={
+              isFieldEmpty && !postalCode && "* Postal Code is required"
+            }
             required
             InputLabelProps={{ shrink: true }}
           />
@@ -84,7 +85,13 @@ const DeliveryInfo = ({
       </DeliveryInfoContainer>
       <Box sx={{ m: 2 }} display="flex" justifyContent="flex-end">
         <Button
-          sx={{ textTransform: "none" }}
+          sx={{
+            textTransform: "none",
+            fontFamily: "Montserrat",
+            fontWeight: 500,
+            "&:hover": { backgroundColor: Colors.secondary },
+            backgroundColor: Colors.primaryLight,
+          }}
           type="submit"
           variant="contained"
           color="primary"
