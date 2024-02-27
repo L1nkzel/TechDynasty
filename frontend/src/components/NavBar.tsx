@@ -115,7 +115,7 @@ export default function NavBar() {
                     ) : (
                       <ShoppingCartIcon />
                     )}
-                    <Typography>Cart</Typography>
+                    <Typography sx={{textTransform: "none", fontFamily: "Montserrat", fontWeight: 500, fontSize:18 }}>Cart</Typography>
                   </Box>
                 </Button>
               </Box>

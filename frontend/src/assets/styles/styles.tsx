@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
-import { AppBar, TextField } from "@mui/material";
+import { AppBar, Button, TextField } from "@mui/material";
 
 export const theme = createTheme({
   breakpoints: {
@@ -22,7 +22,7 @@ export const CustomAppBar = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     height: 80,
   },
-  background: Colors.header100,
+  background: Colors.primary,
 }));
 
 export const CustomTextField = styled(TextField)(({ theme }) => ({
@@ -31,6 +31,18 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
   paddingBottom: theme.spacing(0.5),
   marginTop: theme.spacing(0.7),
   marginBottom: theme.spacing(0.7),
+}));
+
+export const IncDecButton = styled(Button)(({ theme }) => ({
+  borderRadius: "50%",
+  fontSize: "small",
+  padding: "10px",
+  maxWidth: "24px",
+  maxHeight: "24px",
+  minWidth: "unset",
+  minHeight: "unset",
+  "&:hover": { backgroundColor: Colors.secondary },
+  backgroundColor: Colors.primaryLight,
 }));
 
 export const DeliveryInfoContainer = styled("form")(({ theme }) => ({
@@ -52,9 +64,11 @@ export const DeliveryInfoContainer = styled("form")(({ theme }) => ({
 }));
 
 export const Colors = {
-  header100: "#00695C",
-  header200: "#81C784",
-  body100: "#f5f5f5",
-  cell100: "#C8E6C9",
-  modal100: "#cee5ce",
+  primary: "#00695C",
+  primaryLight: "#009987",
+  secondary: "#00b39e",
+  modal: "#cee5ce",
+  title: "#595959"
 };
+
+//#006080 primary2

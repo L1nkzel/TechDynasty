@@ -21,6 +21,7 @@ import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { addToCart } from "../slices/shoppingCartSlice";
 import { useDispatch } from "react-redux";
+import { Colors } from "../assets/styles/styles";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -125,11 +126,16 @@ const ProductScreen = () => {
                   disabled={product.countInStock === 0}
                   variant="contained"
                   onClick={addToCartHandler}
+                  sx={{
+                    textTransform: "none",
+                    "&:hover": { backgroundColor: Colors.secondary },
+                    backgroundColor: Colors.primaryLight,
+                  }}
                 >
                   Add To Cart
                 </Button>
               </Card>
-            
+
               <Stack
                 spacing={1}
                 sx={{ my: 2, p: 2, background: "#f5f5f5", borderRadius: 2 }}
