@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
         postalCode: { type: String, required: true },
         country: { type: String, required: true },
     },
-    paymentOption: { type: String, required: true },
+    paymentOptions: { type: String, required: true },
     paymentResult: {
         id: { type: String },
         status: { type: String },
@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     priceOfItems: { type: Number, required: true, default: 0.0 },
     taxAmount: { type: Number, required: true, default: 0.0 },
     shippingCost: { type: Number, required: true, default: 0.0 },
-    finalPrice: { type: Number, required: true, default: 0.0 },
+    totalPrice: { type: Number, required: true, default: 0.0 },
     isPaymentCompleted: { type: Boolean, required: true, default: false },
     paymentDate: { type: Date },
     isDeliveryCompleted: { type: Boolean, required: true, default: false },
