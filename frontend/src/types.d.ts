@@ -15,7 +15,7 @@ export interface ProductType {
     priceOfItems: number;
     shippingCost: number;
     taxAmount: number;
-    finalPrice: number;
+    totalPrice: number;
 }
 
 declare module "@mui/material/styles" {
