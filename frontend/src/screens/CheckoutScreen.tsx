@@ -40,7 +40,7 @@ import { setOrder } from "../slices/orderSlice";
 
 const CheckoutSceen = () => {
   const { userInfo } = useSelector((state: any) => state.auth);
-  const orderId = useSelector((state: any) => state.orderId); 
+  const order = useSelector((state: any) => state.order); 
   const [expanded, setExpanded] = useState<string | false>("panel1");
   const cart = useSelector((state: any) => state.shoppingCart);
   const [error, setError] = useState("");
@@ -390,7 +390,7 @@ const CheckoutSceen = () => {
                     Complete Order
                   </Button>
                 </Box>
-                {orderId && paymentMethod === "PayPal" ? (
+                {order && paymentMethod === "PayPal" ? (
                   <PayPalScriptProvider
                     options={{ clientId: paypal?.clientId }}
                     deferLoading={!paypal?.clientId}
@@ -398,7 +398,7 @@ const CheckoutSceen = () => {
                     <PayPal setPaymentMethod={setPaymentMethod} />
                   </PayPalScriptProvider>
                 ) : (
-                  orderId &&
+                  order &&
                   paymentMethod && (
                     <Box
                       display={"flex"}
