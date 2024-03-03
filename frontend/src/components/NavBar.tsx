@@ -93,7 +93,8 @@ export default function NavBar() {
                 <Button
                   sx={{ ":hover": { backgroundColor: "transparent" } }}
                   disableRipple
-                  href="/checkout"
+                  component={Link}
+                  to="/checkout"
                   color="inherit"
                 >
                   <Box
@@ -122,9 +123,9 @@ export default function NavBar() {
               <Box sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}>
                 <CustomButton
                   iconMobile={<ShoppingCartIcon />}
-                  text="Cart"
-                  href="/checkout"
-                      
+                  text="Cart"  
+                  component={Link}
+                  to="/checkout"    
                 />
               </Box>
 
@@ -159,6 +160,7 @@ export default function NavBar() {
                     setOpen={setOpen}
                     isRegistered={isRegistered}
                     setIsRegistered={setIsRegistered}
+                    setExpandedPanel={() => {}}
                   />
                 </>
               )}

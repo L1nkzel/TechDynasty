@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const { isLoading, error, data: products } = useGetProductsQuery({});
 
   return (
-    <Box p={1}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p:1}}>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : error ? (

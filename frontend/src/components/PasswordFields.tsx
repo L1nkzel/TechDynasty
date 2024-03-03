@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 import { CustomTextField } from "../assets/styles/styles";
 
 type PasswordFieldsProps = {
-  password: string;
+  value: string;
   id: string;
   label: string;
   error: boolean;
@@ -17,7 +17,7 @@ type PasswordFieldsProps = {
 };
 
 const PasswordFields = ({
-  password,
+  value,
   id,
   label,
   error,
@@ -42,7 +42,7 @@ const PasswordFields = ({
     <Box>
       <CustomTextField
         id={id}
-        value={password}
+        value={value}
         onChange={handleChange}
         type={showPassword ? "text" : "password"}
         error={error}

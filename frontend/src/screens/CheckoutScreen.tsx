@@ -38,10 +38,12 @@ import {
 } from "../slices/ordersApiSlice";
 import { setOrder } from "../slices/orderSlice";
 
+
 const CheckoutSceen = () => {
   const { userInfo } = useSelector((state: any) => state.auth);
   const order = useSelector((state: any) => state.order); 
-  const [expanded, setExpanded] = useState<string | false>("panel1");
+  
+  const [expanded, setExpanded] = useState("panel1");
   const cart = useSelector((state: any) => state.shoppingCart);
   const [error, setError] = useState("");
   const { cartItems, shippingAddress } = cart;
@@ -103,7 +105,7 @@ const CheckoutSceen = () => {
   // Handle panel expansion
   const handleChange = async (panel: string, newExpanded: boolean) => {
     if (userInfo && cartItems.length > 0) {
-      setExpanded(newExpanded ? panel : false);
+      setExpanded(newExpanded ? panel : "");
     }
     if (panel === "panel1") {
       // Reset order states
@@ -383,8 +385,8 @@ const CheckoutSceen = () => {
                       fontFamily: "Montserrat",
                       fontWeight: 500,
                       width: "100%",
-                      "&:hover": { backgroundColor: Colors.secondary },
-                      backgroundColor: Colors.primaryLight,
+                      "&:hover": { backgroundColor: Colors.secondaryLight },
+                      backgroundColor: Colors.secondary,
                     }}
                   >
                     Complete Order
@@ -413,8 +415,8 @@ const CheckoutSceen = () => {
                           textTransform: "none",
                           fontFamily: "Montserrat",
                           fontWeight: 500,
-                          "&:hover": { backgroundColor: Colors.secondary },
-                          backgroundColor: Colors.primaryLight,
+                          "&:hover": { backgroundColor: Colors.secondaryLight },
+                          backgroundColor: Colors.secondary,
                         }}
                       >
                         Complete Order
