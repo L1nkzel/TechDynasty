@@ -117,8 +117,8 @@ const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
             fontFamily: "Montserrat",
             fontWeight: 500,
             width: "100%",
-            "&:hover": { backgroundColor: Colors.secondary },
-            backgroundColor: Colors.primaryLight,
+            "&:hover": { backgroundColor: Colors.secondaryLight },
+            backgroundColor: Colors.secondary,
           }}
         >
           Complete Order

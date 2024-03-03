@@ -46,7 +46,7 @@ const ProductScreen = () => {
   };
 
   return (
-    <Box p={1}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p: 2}}>
       {isLoading ? (
         <Typography variant="h4">Loading...</Typography>
       ) : error ? (
@@ -128,8 +128,8 @@ const ProductScreen = () => {
                   onClick={addToCartHandler}
                   sx={{
                     textTransform: "none",
-                    "&:hover": { backgroundColor: Colors.secondary },
-                    backgroundColor: Colors.primaryLight,
+                    "&:hover": { backgroundColor: Colors.secondaryLight},
+                    backgroundColor: Colors.secondary,
                   }}
                 >
                   Add To Cart

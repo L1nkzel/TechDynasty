@@ -44,7 +44,8 @@ const OrderInfoScreen = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <Grid container justifyContent={"center"} p={4} padding={2}>
+      <Box sx={{ bgcolor: "white", mx: { xs: 3, sm: 5, md: 10 }, }}>
+    <Grid container justifyContent={"center"} p={4}>
       <Grid item xs={10} md={6} m={2}>
         <Typography
           sx={{
@@ -204,7 +205,7 @@ const OrderInfoScreen = () => {
         </List>
       </Grid>
 
-      <Grid item xs={10}  md={5}>
+      <Grid item xxs={10} xs={10}  md={5}>
         {" "}
         <Card sx={{ position: "sticky", top: "120px", p: 2 }}>
          
@@ -213,6 +214,7 @@ const OrderInfoScreen = () => {
         </Card>
       </Grid>
     </Grid>
+    </Box>
     </ThemeProvider>
   );
 };

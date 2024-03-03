@@ -148,8 +148,8 @@ const ShoppingCart = ({
             textTransform: "none",
             fontFamily: "Montserrat",
             fontWeight: 500,
-            "&:hover": { backgroundColor: Colors.secondary },
-            backgroundColor: Colors.primaryLight,
+            "&:hover": { backgroundColor: Colors.secondaryLight },
+            backgroundColor: Colors.secondary,
           }}
           variant="contained"
           color="primary"

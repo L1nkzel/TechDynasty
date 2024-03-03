@@ -1,25 +1,40 @@
 import {
   useMediaQuery,
-  Button,
   IconButton,
   Box,
   Typography,
+  Button,
 } from "@mui/material";
 import { theme } from "../assets/styles/styles";
 interface CustomButtonProps {
   onClick?: any;
-  href?: string;
+  component?: any;
+  to?: string;
   icon?: JSX.Element;
   iconMobile?: JSX.Element;
   text: string;
 }
 
-const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonProps) => {
+const CustomButton = ({
+  onClick,
+  component,
+  to,
+  icon,
+  iconMobile,
+  text,
+}: CustomButtonProps) => {
   const minWidth = useMediaQuery(theme.breakpoints.up("sm"));
 
   if (minWidth) {
     return (
-      <Button sx={{ ":hover": { backgroundColor: "transparent" } }} disableRipple href={href} onClick={onClick} color="inherit">
+      <Button
+        sx={{ ":hover": { backgroundColor: "transparent" } }}
+        disableRipple
+        component={component}
+        to={to!}
+        onClick={onClick}
+        color="inherit"
+      >
         {" "}
         <Box
           display="flex"
@@ -28,7 +43,14 @@ const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonPro
           justifyContent={"center"}
         >
           {icon}
-          <Typography sx={{textTransform: "none", fontFamily: "Montserrat", fontWeight: 500, fontSize:18 }}>
+          <Typography
+            sx={{
+              textTransform: "none",
+              fontFamily: "Montserrat",
+              fontWeight: 500,
+              fontSize: 18,
+            }}
+          >
             {text}
           </Typography>
         </Box>
@@ -36,7 +58,7 @@ const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonPro
     );
   } else {
     return (
-      <IconButton href={href!} onClick={onClick} color="inherit">
+      <IconButton component={component} to={to!} onClick={onClick} color="inherit">
         {" "}
         <Box
           display="flex"
@@ -44,9 +66,7 @@ const CustomButton = ({ onClick, href, icon, iconMobile, text }: CustomButtonPro
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Box sx={{ fontSize: { xxs: 10 }}} >
-            {iconMobile}
-          </Box>
+          <Box sx={{ fontSize: { xxs: 10 } }}>{iconMobile}</Box>
         </Box>
       </IconButton>
     );

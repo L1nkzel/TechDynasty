@@ -15,7 +15,7 @@ const CategoryScreen = () => {
   } = useGetProductsByCategoryQuery(category);
 
   return (
-    <>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white"}}>
       {" "}
       {isLoading ? (
         <Typography>Loading...</Typography>
@@ -39,7 +39,7 @@ const CategoryScreen = () => {
           </Grid>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

@@ -89,8 +89,8 @@ const DeliveryInfo = ({
             textTransform: "none",
             fontFamily: "Montserrat",
             fontWeight: 500,
-            "&:hover": { backgroundColor: Colors.secondary },
-            backgroundColor: Colors.primaryLight,
+            "&:hover": { backgroundColor: Colors.secondaryLight },
+            backgroundColor: Colors.secondary,
           }}
           type="submit"
           variant="contained"

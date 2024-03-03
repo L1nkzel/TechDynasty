@@ -33,8 +33,8 @@ const LoginRegisterModal = ({
   isRegistered: boolean;
   setIsRegistered: any;
   redirectUrl?: string;
-  setExpandedPanel?: any;
-  context?: string
+  setExpandedPanel: any;
+  context?: string;
 }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -74,7 +74,7 @@ const LoginRegisterModal = ({
     dispatch(setIsRegistered(!isRegistered));
     resetFormData();
   };
-  
+
   const isValidEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailRegex.test(email);
@@ -92,11 +92,11 @@ const LoginRegisterModal = ({
 
       if (redirectUrl === "/checkout" && context === "checkoutCartLogin") {
         setExpandedPanel("panel2");
-        console.log(context);
+        dispatch(setOpen(false));
       } else {
         setExpandedPanel("panel1");
       }
-     
+
       dispatch(setOpen(false));
     } catch (error: ErrorResponse | any) {
       if (error.status === 401) {
@@ -114,8 +114,10 @@ const LoginRegisterModal = ({
 
     // Validate form data
     const isNameEmpty = formData.name === "";
-    const isEmailValid = formData.email === "" ? false : isValidEmail(formData.email);
-    const isPasswordError = formData.password === "" || formData.password.length < 6;
+    const isEmailValid =
+      formData.email === "" ? false : isValidEmail(formData.email);
+    const isPasswordError =
+      formData.password === "" || formData.password.length < 6;
     const doPasswordsMatch = formData.password === formData.confirmPassword;
 
     // Update state with validation results
@@ -213,7 +215,7 @@ const LoginRegisterModal = ({
               autoFocus
               label="Name"
               placeholder="Name"
-            
+              
               error={isRegistered && nameIsEmpty}
               helperText={isRegistered && nameIsEmpty && "Name cannot be empty"}
               InputProps={{
@@ -229,7 +231,7 @@ const LoginRegisterModal = ({
             name="email"
             value={formData.email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value }) 
+              setFormData({ ...formData, email: e.target.value })
             }
             fullWidth
             label="Email"
@@ -239,11 +241,11 @@ const LoginRegisterModal = ({
               (isRegistered && userExists) ||
               (isRegistered && !emailIsValid) ||
               (!isRegistered && passwordError)
-            } 
+            }
             helperText={
               (isRegistered && userExists && "User already exists") ||
               (isRegistered && !emailIsValid ? "Invalid Email Format" : "")
-            } 
+            }
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -255,7 +257,7 @@ const LoginRegisterModal = ({
 
           <PasswordFields
             {...{
-              password: formData.password,
+              value: formData.password,
               onChange: (value) => {
                 setFormData({ ...formData, password: value });
               },
@@ -273,7 +275,7 @@ const LoginRegisterModal = ({
           {isRegistered && (
             <PasswordFields
               {...{
-                password: formData.confirmPassword,
+                value: formData.confirmPassword,
                 onChange: (value) => {
                   setFormData({ ...formData, confirmPassword: value });
                 },

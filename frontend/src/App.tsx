@@ -4,17 +4,18 @@ import Header from "./components/Header";
 import "./assets/styles/main.css";
 import { Outlet } from "react-router-dom";
 const App = () => {
+  
   return (
-    <>
+    <Box>
       <Header/>
       <Box
         minHeight="82vh"
-        sx={{ mt: {xs: 7, sm: 10 }}}
+        sx={{ mt: {xs: 7, sm: 10 }, bgcolor: "#f5f5f5" }}
       >
         <Outlet />
       </Box>
       <Footer />
-    </>
+    </Box>
   );
 };
 

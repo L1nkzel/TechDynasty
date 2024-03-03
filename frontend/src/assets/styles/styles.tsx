@@ -15,7 +15,7 @@ export const theme = createTheme({
     },
   },
 });
-
+  
 export const CustomAppBar = styled(AppBar)(({ theme }) => ({
   position: "fixed",
   justifyContent: "center",
@@ -41,8 +41,8 @@ export const IncDecButton = styled(Button)(({ theme }) => ({
   maxHeight: "24px",
   minWidth: "unset",
   minHeight: "unset",
-  "&:hover": { backgroundColor: Colors.secondary },
-  backgroundColor: Colors.primaryLight,
+  "&:hover": { backgroundColor: Colors.secondaryLight },
+  backgroundColor: Colors.secondary,
 }));
 
 export const DeliveryInfoContainer = styled("form")(({ theme }) => ({
@@ -64,9 +64,10 @@ export const DeliveryInfoContainer = styled("form")(({ theme }) => ({
 }));
 
 export const Colors = {
-  primary: "#00695C",
-  primaryLight: "#009987",
-  secondary: "#00b39e",
+  primary: "#303436",
+  primaryLight: "#e4e6e7",
+  secondary: "#009987",
+  secondaryLight: "#00b39e",
   modal: "#cee5ce",
   title: "#595959"
 };
