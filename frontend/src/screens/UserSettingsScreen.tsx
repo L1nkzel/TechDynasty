@@ -1,7 +1,8 @@
 import { Box, Grid } from "@mui/material";
 import ProfileNavigation from "../components/ProfileNavigation";
+import ProfileSettings from "../components/ProfileSettings";
 
-const UserSettings = () => {
+const UserSettingsScreen = () => {
   return (
     <Box
       sx={{
@@ -29,11 +30,11 @@ const UserSettings = () => {
           md={7}
           sx={{ mt: 2, display: "flex", alignItems: "center" }}
         >
-          
+          <ProfileSettings />
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default UserSettings;
+export default UserSettingsScreen;

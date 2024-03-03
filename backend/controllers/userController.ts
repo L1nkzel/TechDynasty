@@ -102,6 +102,12 @@ const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
     const user = await User.findById(userReq.user._id);
 
     if (user) { // if user exists then update user data
+
+        if (req.body.oldPassword && !(await user.matchPassword(req.body.oldPassword))) {
+            res.status(401);
+            throw new Error("Incorrect old password");
+        }
+        
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
         
