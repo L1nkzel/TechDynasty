@@ -14,6 +14,9 @@ import CategoryScreen from "./screens/CategoryScreen.tsx";
 import store from "./store";
 import CheckoutScreen from "./screens/CheckoutScreen.tsx";
 import OrderInfoScreen from "./screens/OrderInfoScreen.tsx";
+import UserProfileScreen from "./screens/UserProfileScreen.tsx";
+import UserWishList from "./screens/UserWishList.tsx";
+import UserSettings from "./screens/UserSettings.tsx";
 
 
 const router = createBrowserRouter(
@@ -24,6 +27,9 @@ const router = createBrowserRouter(
       <Route path="/:category/:id"element={<ProductScreen />} />
       <Route path="/checkout" element={<CheckoutScreen />} />
       <Route path='/order/:id' element={<OrderInfoScreen />} />
+      <Route path="/profile/orders" element={<UserProfileScreen />} />
+      <Route path="/profile/wishlist" element={<UserWishList />} />
+      <Route path="/profile/settings" element={<UserSettings />} />
     </Route>
   )
 );

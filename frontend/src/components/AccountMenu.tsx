@@ -7,6 +7,7 @@ import Logout from "@mui/icons-material/Logout";
 import { MenuList } from "@mui/material";
 import { useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountMenu({
   anchorEl,
@@ -27,6 +28,12 @@ export default function AccountMenu({
       handleClose(); 
     } 
   }, [isSmallScreen, isBigScreen]);
+
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/profile/orders");
+  }
 
   return (
     <>
@@ -69,7 +76,7 @@ export default function AccountMenu({
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuList>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleProfileClick}>
             <Avatar /> Profile
           </MenuItem>
           <Divider />
