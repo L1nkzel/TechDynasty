@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import ProfileNavigation from "../components/ProfileNavigation";
 
-const UserWishList = () => {
+const UserWishListScreen = () => {
   return (
     <Box
       sx={{
@@ -39,4 +39,4 @@ const UserWishList = () => {
   );
 };
 
-export default UserWishList;
+export default UserWishListScreen;
