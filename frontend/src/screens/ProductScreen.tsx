@@ -20,18 +20,22 @@ import { errorDisplayMessage } from "../components/errorDisplayMessage";
 import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { addToCart } from "../slices/shoppingCartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Colors } from "../assets/styles/styles";
+import AlertBox from "../components/AlertBox";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const { isLoading, error, data: product } = useGetProductByIdQuery(productId);
+  const { userInfo } = useSelector((state: any) => state.auth);
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [qty, setQty] = useState(1);
 
   const addToCartHandler = () => {
+    if (userInfo && !userInfo.isAdmin ){
     dispatch(
       addToCart({
         ...product,
@@ -39,6 +43,17 @@ const ProductScreen = () => {
       })
     );
     navigate("/checkout");
+    } else if(!userInfo) {
+      dispatch(
+        addToCart({
+          ...product,
+          qty,
+        })
+      );
+      navigate("/checkout");
+    } else {
+      setOpen(true);
+    }
   };
 
   const handleChange = (event: any) => {
@@ -161,6 +176,7 @@ const ProductScreen = () => {
               </Typography>
               <Typography sx={{ mb: 4 }}>{product.description}</Typography>
             </Grid>
+            <AlertBox open={open} setOpen={setOpen} text={"Log in as a customer to access this"} />
           </Grid>
         </>
       )}

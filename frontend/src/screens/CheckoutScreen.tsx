@@ -37,6 +37,8 @@ import {
   useGetPaypalClientIdQuery,
 } from "../slices/ordersApiSlice";
 import { setOrder } from "../slices/orderSlice";
+import { useNavigate } from "react-router-dom";
+import AlertBox from "../components/AlertBox";
 
 
 const CheckoutSceen = () => {
@@ -53,7 +55,7 @@ const CheckoutSceen = () => {
   const [postalCode, setPostalCode] = useState(
     shippingAddress?.postalCode || ""
   );
-
+  const navigate = useNavigate();
   const [country, setCountry] = useState(shippingAddress?.country || "");
   const [paymentMethod, setPaymentMethod] = useState("");
   //error states for delivery info form
@@ -74,27 +76,33 @@ const CheckoutSceen = () => {
 
   const { open, isRegistered } = useSelector(
     (state: any) => state.loginRegister
-  );
+    );
+    
+    const [createOrder] = useCreateOrderMutation();
+    const { data: paypal } = useGetPaypalClientIdQuery("");
+    
+    const dispatch = useDispatch();
+    const [context, setContext] = useState("");
+    const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+    const paymentMethodAccordionRef = useRef<HTMLDivElement | null>(null);
+    
+    useEffect(() => {
+      if (expanded === "panel3") {
+        // Introduce a slight delay to allow for the expansion animation to complete
+        const delay = setTimeout(() => {
+          scrollPaymentMethodAccordionIntoView();
+        }, 100); // Adjust this delay as needed
+        
+        return () => clearTimeout(delay);
+      }
+    }, [expanded]);
 
-  const [createOrder] = useCreateOrderMutation();
-  const { data: paypal } = useGetPaypalClientIdQuery("");
-
-  const dispatch = useDispatch();
-  const [context, setContext] = useState("");
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const paymentMethodAccordionRef = useRef<HTMLDivElement | null>(null);
-  const [cartUpdated, setCartUpdated] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (expanded === "panel3") {
-      // Introduce a slight delay to allow for the expansion animation to complete
-      const delay = setTimeout(() => {
-        scrollPaymentMethodAccordionIntoView();
-      }, 100); // Adjust this delay as needed
-
-      return () => clearTimeout(delay);
+    //Temporary fix to Redirect to home page if user is logged in as admin
+    useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      navigate("/");
     }
-  }, [expanded]);
+  }, [userInfo, navigate]);
 
   const scrollPaymentMethodAccordionIntoView = () => {
     if (paymentMethodAccordionRef?.current) {
@@ -109,7 +117,6 @@ const CheckoutSceen = () => {
     }
     if (panel === "panel1") {
       // Reset order states
-      setCartUpdated(true);
       setPaymentMethod("");
       dispatch(setOrder(""));
     }
@@ -128,7 +135,6 @@ const CheckoutSceen = () => {
   };
   const updateCartHandler = async (item: ProductType, newQty: number) => {
     dispatch(updateCartItemQty({ ...item, qty: newQty }));
-    setCartUpdated(true);
   };
 
   const removeFromCartHandler = async (item: ProductType) => {
@@ -362,7 +368,6 @@ const CheckoutSceen = () => {
                 shippingCost={Number(shippingCost)}
                 taxAmount={Number(taxAmount)}
                 totalPrice={Number(totalPrice)}
-                cartUpdated={cartUpdated}
               />
 
               <Box sx={{ backgroundColor: "#f5f5f5", p: 2 }}>

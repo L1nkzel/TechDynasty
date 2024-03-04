@@ -15,7 +15,7 @@ import { Colors, theme } from "../../assets/styles/styles";
 
 const ManageOrdersTable = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const { data: orders, isLoading } = useGetAllOrdersQuery({});
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
@@ -106,7 +106,7 @@ const ManageOrdersTable = () => {
                             Not Paid
                           </TableCell>
                         )}
-                        {order.isDelivered ? (
+                        {order.isDeliveryCompleted ? (
                           <TableCell
                             align="right"
                             sx={{ fontSize: { xxs: 12, md: 14 } }}
