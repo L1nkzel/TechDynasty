@@ -1,13 +1,15 @@
-import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import Logout from "@mui/icons-material/Logout";
-import { MenuList } from "@mui/material";
+import { MenuList, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import { useSelector } from "react-redux";
 
 export default function AccountMenu({
   anchorEl,
@@ -18,22 +20,26 @@ export default function AccountMenu({
   const isSmallScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
-  const isBigScreen = useMediaQuery((theme: any) =>
-    theme.breakpoints.up("sm")
-  );
+  const isBigScreen = useMediaQuery((theme: any) => theme.breakpoints.up("sm"));
+
+  const { userInfo } = useSelector((state: any) => state.auth);
 
   // close the menu if screen is changed from small to big or vice versa
   useEffect(() => {
-    if (isSmallScreen || isBigScreen ) {
-      handleClose(); 
-    } 
+    if (isSmallScreen || isBigScreen) {
+      handleClose();
+    }
   }, [isSmallScreen, isBigScreen]);
 
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
-    navigate("/profile/orders");
-  }
+    if (!userInfo.isAdmin) {
+      navigate("/profile/orders");
+    } else {
+      navigate("/admin/orders");
+    }
+  };
 
   return (
     <>
@@ -77,14 +83,25 @@ export default function AccountMenu({
       >
         <MenuList>
           <MenuItem onClick={handleProfileClick}>
-            <Avatar /> Profile
+            {!userInfo.isAdmin ? (
+              <ListItemIcon sx={{ display: "flex", alignItems: "center" }}>
+                <PersonIcon fontSize="small" />
+                <Typography ml={1}>Profile</Typography>
+              </ListItemIcon>
+            ) : (
+              <ListItemIcon sx={{ display: "flex", alignItems: "center" }}>
+                <DashboardIcon fontSize="small" />
+                <Typography ml={1}>DashBoard</Typography>
+              </ListItemIcon>
+            )}
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleLogout}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ display: "flex", alignItems: "center" }}>
               <Logout fontSize="small" />
+              <Typography ml={1}>Logout</Typography>
             </ListItemIcon>
-            Logout
+          
           </MenuItem>
         </MenuList>
       </Menu>
