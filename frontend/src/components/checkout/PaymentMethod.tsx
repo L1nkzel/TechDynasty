@@ -24,7 +24,6 @@ const Payment = ({
   priceOfItems,
   shippingCost,
   taxAmount,
-  cartUpdated,
 }: {
   setPaymentMethod: any;
   paymentMethod: String;
@@ -38,7 +37,6 @@ const Payment = ({
   priceOfItems: number;
   shippingCost: number;
   taxAmount: number;
-  cartUpdated: any;
 }) => {
   const dispatch = useDispatch();
 
@@ -78,10 +76,6 @@ const Payment = ({
       console.log(res.orderItems);
       console.log(res.totalPrice);
     } else {
-      if (cartUpdated) {
-        dispatch(setOrder(""));
-      }
-
       setPaymentMethod(selectedPaymentMethod);
       setError("");
     }

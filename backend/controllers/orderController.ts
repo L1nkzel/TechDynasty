@@ -1,6 +1,14 @@
 import asyncHandler from "../middleware/asyncHandler";
 import Order from "../models/orderModel";
 
+const deleteUnpaidOrders = async (orderId:any) => {
+    const order = await Order.findById(orderId);
+    if (order && !order.isPaymentCompleted) {
+        await order.deleteOne();
+        console.log(`Order ${orderId} deleted because it was not paid within 5 minutes.`);
+    }
+};
+
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -32,10 +40,18 @@ const createNewOrder = asyncHandler(async (req: any, res: any) => {
         });
         const createdOrder = await order.save();
         res.status(201).json(createdOrder);
+
+        // Delete unpaid orders after 5 minutes if not paid
+        const orderId = createdOrder._id;
+        setTimeout(() => {
+            deleteUnpaidOrders(orderId);
+        }, 5 * 60 * 1000); 
+
     } else {
         res.status(400);
         throw new Error("No order items");
     }
+
 });
 
 // @desc    Get my orders
@@ -96,6 +112,19 @@ const markOrderAsPaid = asyncHandler(async (req, res) => {
 // @route PUT /api/orders/:id/deliver
 // @access Private/Admin
 const markOrderAsDelivered = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isDeliveryCompleted = true;
+        order.deliveryDate = new Date(Date.now());
+
+        const updatedOrder = await order.save();
+        res.status(200).json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error("Order not found");
+    }
+
 
 
 });
