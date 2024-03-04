@@ -16,7 +16,7 @@ import LoginRegisterModal from "./LoginRegisterModal";
 import CustomButton from "./CustomButton";
 import { CustomAppBar, theme } from "../assets/styles/styles";
 import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
-import { Person } from "@mui/icons-material";
+import { AdminPanelSettings, Person } from "@mui/icons-material";
 import AccountMenu from "./AccountMenu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,6 @@ export default function NavBar() {
     dispatch(setIsRegistered(false));
   };
 
-
   const handleLogout = async () => {
     try {
       await logoutUserApiCall().unwrap();
@@ -61,8 +60,6 @@ export default function NavBar() {
       console.log(error);
     }
   };
-
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,61 +86,95 @@ export default function NavBar() {
               justifyContent="end"
               flexGrow={1}
             >
-              <Box sx={{ display: { xxs: "none", sm: "block" } }}>
-                <Button
-                  sx={{ ":hover": { backgroundColor: "transparent" } }}
-                  disableRipple
-                  component={Link}
-                  to="/checkout"
-                  color="inherit"
-                >
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    {cartItems.length > 0 ? (
-                      <Badge
-                        badgeContent={cartItems.reduce(
-                          (a: number, c: any) => a + c.qty,
-                          0
-                        )}
-                        color="warning"
+              {!userInfo || (userInfo && !userInfo.isAdmin) ? (
+                <>
+                  <Box sx={{ display: { xxs: "none", sm: "block" } }}>
+                    <Button
+                      sx={{ ":hover": { backgroundColor: "transparent" } }}
+                      disableRipple
+                      component={Link}
+                      to="/checkout"
+                      color="inherit"
+                    >
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems={"center"}
+                        justifyContent={"center"}
                       >
-                        <ShoppingCartIcon />
-                      </Badge>
-                    ) : (
-                      <ShoppingCartIcon />
-                    )}
-                    <Typography sx={{textTransform: "none", fontFamily: "Montserrat", fontWeight: 500, fontSize:18 }}>Cart</Typography>
+                        {cartItems.length > 0 ? (
+                          <Badge
+                            badgeContent={cartItems.reduce(
+                              (a: number, c: any) => a + c.qty,
+                              0
+                            )}
+                            color="warning"
+                          >
+                            <ShoppingCartIcon />
+                          </Badge>
+                        ) : (
+                          <ShoppingCartIcon />
+                        )}
+                        <Typography
+                          sx={{
+                            textTransform: "none",
+                            fontFamily: "Montserrat",
+                            fontWeight: 500,
+                            fontSize: 18,
+                          }}
+                        >
+                          Cart
+                        </Typography>
+                      </Box>
+                    </Button>
                   </Box>
-                </Button>
-              </Box>
-              <Box sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}>
-                <CustomButton
-                  iconMobile={<ShoppingCartIcon />}
-                  text="Cart"  
-                  component={Link}
-                  to="/checkout"    
-                />
-              </Box>
 
+                  <Box
+                    sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}
+                  >
+                    <CustomButton
+                      iconMobile={<ShoppingCartIcon />}
+                      text="Cart"
+                      component={Link}
+                      to="/checkout"
+                    />
+                  </Box>
+                </>
+              ) : null}
               {userInfo ? (
                 // Logged in user
                 <Box>
-                  <CustomButton
-                    icon={<Person />}
-                    text="Profile"
-                    iconMobile={<Person />}
-                    onClick={handleClick}
-                  />
-                  <AccountMenu
-                    openAnchor={openAnchor}
-                    anchorEl={anchorEl}
-                    handleClose={handleClose}
-                    handleLogout={handleLogout}
-                  />
+                  {userInfo.isAdmin ? (
+                    /* Admin user */
+                    <>
+                      <CustomButton
+                        icon={<AdminPanelSettings />}
+                        text="Admin"
+                        onClick={handleClick}
+                      />
+                      <AccountMenu
+                        openAnchor={openAnchor}
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                        handleLogout={handleLogout}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <CustomButton
+                        icon={<Person />}
+                        text="Profile"
+                        iconMobile={<Person />}
+                        onClick={handleClick}
+                      />
+                      <AccountMenu
+                        openAnchor={openAnchor}
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                        handleLogout={handleLogout}
+                      />
+                    </>
+                  )}
                 </Box>
               ) : (
                 /* Logged out user */
