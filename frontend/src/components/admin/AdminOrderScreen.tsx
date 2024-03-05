@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material"
-import NavigationDashboard from "../components/admin/NavigationDashboard"
-import ManageOrdersTable from "../components/admin/ManageOrdersTable"
+import NavigationDashboard from "./NavigationDashboard"
+import ManageOrdersTable from "./ManageOrdersTable"
 
 
 const AdminOrderScreen = () => {

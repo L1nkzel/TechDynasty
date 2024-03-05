@@ -19,7 +19,9 @@ import UserWishListScreen from "./screens/UserWishListScreen.tsx";
 import UserSettingsScreen from "./screens/UserSettingsScreen.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import AdminRoute from "./components/admin/AdminRoute.tsx";
-import AdminOrderScreen from "./screens/AdminOrderScreen.tsx";
+import AdminOrderScreen from "./components/admin/AdminOrderScreen.tsx";
+import AdminProductScreen from "./components/admin/AdminProductScreen.tsx";
+
 
 
 const router = createBrowserRouter(
@@ -32,6 +34,7 @@ const router = createBrowserRouter(
 
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />
+        <Route path="/admin/products" element={<AdminProductScreen />} />
       </Route>
 
       <Route path="" element={<PrivateRoute />}>
