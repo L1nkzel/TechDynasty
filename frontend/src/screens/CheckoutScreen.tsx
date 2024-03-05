@@ -38,7 +38,6 @@ import {
 } from "../slices/ordersApiSlice";
 import { setOrder } from "../slices/orderSlice";
 import { useNavigate } from "react-router-dom";
-import AlertBox from "../components/AlertBox";
 
 
 const CheckoutSceen = () => {
