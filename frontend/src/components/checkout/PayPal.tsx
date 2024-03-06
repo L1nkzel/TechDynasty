@@ -12,9 +12,10 @@ import { clearCart, savePaymentMethod } from "../../slices/shoppingCartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setOrder } from "../../slices/orderSlice";
+import { RootState } from "../../store";
 
 const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
-  const order = useSelector((state: any) => state.order);
+  const order = useSelector((state: RootState) => state.order);
   const { data: paypal } = useGetPaypalClientIdQuery({});
   const [payOrder, { isLoading: loadingPayPal, error: errorPayPal }] =
     usePayOrderMutation();

@@ -5,6 +5,7 @@ import authSlice from './slices/authSlice';
 import loginRegisterSlice from './slices/loginRegisterSlice';
 import orderSlice from './slices/orderSlice';
 
+
 const store = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
@@ -18,4 +19,4 @@ const store = configureStore({
     devTools: true
 });
 
-export default store;
+export type RootState = ReturnType<typeof store.getState>
