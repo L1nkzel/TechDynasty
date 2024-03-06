@@ -2,9 +2,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AlertBox from "../AlertBox";
 import { useState, useEffect } from "react";
+import { RootState } from "../../store";
 
 const AdminRoute = () => {
-    const { userInfo } = useSelector((state: any) => state.auth);
+    const { userInfo } = useSelector((state: RootState) => state.auth);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 

@@ -21,11 +21,12 @@ import { Colors, theme } from "../assets/styles/styles";
 import { errorDisplayMessage } from "../components/errorDisplayMessage";
 import OrderSummary from "../components/OrderSummary";
 import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const OrderInfoScreen = () => {
   const { id } = useParams();
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(id);
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const [deliverOrder, { isLoading: isDelivering }] = useDeliverOrderMutation();
 
   const deliveryHandler = async () => {

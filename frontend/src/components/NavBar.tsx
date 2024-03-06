@@ -23,12 +23,13 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { resetCart } from "../slices/shoppingCartSlice";
+import { RootState } from "../store";
 
 export default function NavBar() {
-  const { cartItems } = useSelector((state: any) => state.shoppingCart);
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { cartItems } = useSelector((state: RootState) => state.shoppingCart);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const { open, isRegistered } = useSelector(
-    (state: any) => state.loginRegister
+    (state: RootState) => state.loginRegister
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openAnchor = Boolean(anchorEl);

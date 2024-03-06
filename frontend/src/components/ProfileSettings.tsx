@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/authSlice";
 import { useProfileMutation } from "../slices/usersApiSlice";
 import AlertBox from "./AlertBox";
+import { RootState } from "../store";
 
 const ProfileSettings = () => {
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 

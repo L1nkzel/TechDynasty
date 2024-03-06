@@ -38,14 +38,15 @@ import {
 } from "../slices/ordersApiSlice";
 import { setOrder } from "../slices/orderSlice";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../store";
 
 
 const CheckoutSceen = () => {
-  const { userInfo } = useSelector((state: any) => state.auth);
-  const order = useSelector((state: any) => state.order); 
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+  const order = useSelector((state: RootState) => state.order); 
+  const cart = useSelector((state: RootState) => state.shoppingCart);
   
   const [expanded, setExpanded] = useState("panel1");
-  const cart = useSelector((state: any) => state.shoppingCart);
   const [error, setError] = useState("");
   const { cartItems, shippingAddress } = cart;
 

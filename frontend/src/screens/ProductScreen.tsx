@@ -23,11 +23,12 @@ import { addToCart } from "../slices/shoppingCartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Colors } from "../assets/styles/styles";
 import AlertBox from "../components/AlertBox";
+import { RootState } from "../store";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const { isLoading, error, data: product } = useGetProductByIdQuery(productId);
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -35,15 +36,15 @@ const ProductScreen = () => {
   const [qty, setQty] = useState(1);
 
   const addToCartHandler = () => {
-    if (userInfo && !userInfo.isAdmin ){
-    dispatch(
-      addToCart({
-        ...product,
-        qty,
-      })
-    );
-    navigate("/checkout");
-    } else if(!userInfo) {
+    if (userInfo && !userInfo.isAdmin) {
+      dispatch(
+        addToCart({
+          ...product,
+          qty,
+        })
+      );
+      navigate("/checkout");
+    } else if (!userInfo) {
       dispatch(
         addToCart({
           ...product,
@@ -61,7 +62,7 @@ const ProductScreen = () => {
   };
 
   return (
-    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p: 2}}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p: 2 }}>
       {isLoading ? (
         <Typography variant="h4">Loading...</Typography>
       ) : error ? (
@@ -143,7 +144,7 @@ const ProductScreen = () => {
                   onClick={addToCartHandler}
                   sx={{
                     textTransform: "none",
-                    "&:hover": { backgroundColor: Colors.secondaryLight},
+                    "&:hover": { backgroundColor: Colors.secondaryLight },
                     backgroundColor: Colors.secondary,
                   }}
                 >
@@ -176,7 +177,11 @@ const ProductScreen = () => {
               </Typography>
               <Typography sx={{ mb: 4 }}>{product.description}</Typography>
             </Grid>
-            <AlertBox open={open} setOpen={setOpen} text={"Log in as a customer to access this"} />
+            <AlertBox
+              open={open}
+              setOpen={setOpen}
+              text={"Log in as a customer to access this"}
+            />
           </Grid>
         </>
       )}

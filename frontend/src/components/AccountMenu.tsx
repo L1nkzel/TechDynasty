@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export default function AccountMenu({
   anchorEl,
@@ -22,7 +23,7 @@ export default function AccountMenu({
   );
   const isBigScreen = useMediaQuery((theme: any) => theme.breakpoints.up("sm"));
 
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
 
   // close the menu if screen is changed from small to big or vice versa
   useEffect(() => {
