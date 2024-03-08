@@ -5,7 +5,12 @@ import Message from "../components/Message";
 import { errorDisplayMessage } from "../components/errorDisplayMessage";
 import { ProductType } from "../types";
 const HomeScreen = () => {
-  const { isLoading, error, data: products } = useGetProductsQuery({});
+  const { isLoading, error, data: products } = useGetProductsQuery({}) as 
+  {
+    isLoading: boolean;
+    error: any;
+    data: ProductType[];
+  };
 
   return (
     <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p:1}}>
@@ -28,7 +33,7 @@ const HomeScreen = () => {
               columnGap={2}
             >
               {products.map((product: ProductType) => (
-                <Grid item xs={8} sm={5} md={3} key={product._id}>
+                <Grid item xs={8} sm={5} md={2.5} key={product._id}>
                   <Product product={product} />
                 </Grid>
               ))}

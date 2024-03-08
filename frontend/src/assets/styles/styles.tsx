@@ -20,7 +20,7 @@ export const CustomAppBar = styled(AppBar)(({ theme }) => ({
   position: "fixed",
   justifyContent: "center",
   [theme.breakpoints.up("sm")]: {
-    height: 80,
+    height: 100,
   },
   background: Colors.primary,
 }));
@@ -65,9 +65,10 @@ export const DeliveryInfoContainer = styled("form")(({ theme }) => ({
 
 export const Colors = {
   primary: "#303436",
-  primaryLight: "#e4e6e7",
-  secondary: "#009987",
-  secondaryLight: "#00b39e",
+  primaryLight: "#484e51",
+  highlight: "#e4e6e7",
+  secondary: "#40b9bf",
+  secondaryLight: "#66c7cc",
   modal: "#cee5ce",
   title: "#595959"
 };
