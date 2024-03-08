@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material"
-import NavigationDashboard from "./NavigationDashboard"
+import AdminNavigation from "./AdminNavigation"
 import ManageOrdersTable from "./ManageOrdersTable"
 
 
@@ -8,15 +8,13 @@ const AdminOrderScreen = () => {
     <Box
     sx={{
       pt: 2,
-      mx: { xs: 3, sm: 5, md: 10 },
-      bgcolor: "white",
       height: "82vh",
       overflow: "auto",
     }}
   >
-    <Grid container padding={2} spacing={2} sx={{ justifyContent: "center" }}>
-      <Grid item xs={11} sm={10} md={3}>
-        <NavigationDashboard />
+    <Grid container spacing={2} sx={{px:2, justifyContent: "center" }}>
+      <Grid item xs={11} sm={10} md={3} sx={{ px: 2, bgcolor: "white", height: "100vh" }}>
+        <AdminNavigation />
       </Grid>
 
       <Grid item xs={11} sm={10} md={9} sx={{ mt: 2 }}>

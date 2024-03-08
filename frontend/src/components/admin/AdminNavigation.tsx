@@ -9,6 +9,8 @@ import { useState } from "react";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 
 const buttonStyles = {
   width: "100%",
@@ -18,7 +20,7 @@ const buttonStyles = {
     backgroundColor: Colors.secondaryLight,
     color: "whitesmoke",
   },
-  backgroundColor: Colors.primaryLight,
+  backgroundColor: Colors.highlight,
   color: Colors.primary,
 };
 
@@ -28,10 +30,11 @@ const buttonNavigationStyles = {
     backgroundColor: Colors.secondaryLight,
     color: "whitesmoke",
   },
-  backgroundColor: Colors.primaryLight,
+  backgroundColor: Colors.highlight,
   color: Colors.primary,
 };
-const NavigationDashboard = () => {
+const AdminNavigation = () => {
+  const isDashboardScreen = location.pathname === "/admin/dashboard";
   const isOrdersScreen = location.pathname === "/admin/orders";
   const isUsersScreen = location.pathname === "/admin/users";
   const isProductsScreen = location.pathname === "/admin/products";
@@ -42,7 +45,7 @@ const NavigationDashboard = () => {
 
   const getButtonStyles = (isFocused: boolean) => ({
     ...buttonStyles,
-    backgroundColor: isFocused ? Colors.primary : Colors.primaryLight,
+    backgroundColor: isFocused ? Colors.primaryLight : Colors.highlight,
     color: isFocused ? "whitesmoke" : Colors.primary,
     "&:hover": {
       backgroundColor: Colors.secondaryLight,
@@ -51,7 +54,7 @@ const NavigationDashboard = () => {
   });
   const getButtonNavigationStyles = (isFocused: boolean) => ({
     ...buttonNavigationStyles,
-    backgroundColor: isFocused ? Colors.primary : Colors.primaryLight,
+    backgroundColor: isFocused ? Colors.primaryLight : Colors.highlight,
     color: isFocused ? "whitesmoke" : Colors.primary,
     "&:hover": {
       backgroundColor: Colors.secondaryLight,
@@ -65,9 +68,9 @@ const NavigationDashboard = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ position:"sticky", top: 0}}>
       <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-        Admin Dashboard
+        Admin Panel
       </Typography>
 
       <Box
@@ -79,6 +82,20 @@ const NavigationDashboard = () => {
           gap: 1,
         }}
       >
+        <Button
+          component={Link}
+          to="/admin/dashboard"
+          variant="contained"
+          sx={getButtonStyles(isDashboardScreen)}
+        >
+          <DashboardOutlinedIcon sx={{ mr: 1, fontSize: 20 }} />
+          <Typography
+            sx={{ textTransform: "none", fontSize: 14, fontWeight: 500 }}
+          >
+            {" "}
+            Dashboard
+          </Typography>
+        </Button>
         <Button
           component={Link}
           to="/admin/orders"
@@ -123,7 +140,7 @@ const NavigationDashboard = () => {
           </Typography>
         </Button>
           <Button
-              onClick={handleClick}
+            onClick={handleClick}
             variant="contained"
             sx={getButtonNavigationStyles(isProductsScreen)}
           >
@@ -166,12 +183,12 @@ const NavigationDashboard = () => {
           variant="contained"
           sx={getButtonStyles(isSettingsScreen)}
         >
-          <SettingsIcon sx={{ mr: 1, fontSize: 20 }} />
+          <AnalyticsOutlinedIcon sx={{ mr: 1, fontSize: 20 }} />
           <Typography
             sx={{ textTransform: "none", fontSize: 14, fontWeight: 500 }}
           >
             {" "}
-            Settings
+            Statistics
           </Typography>
         </Button>
       </Box>
@@ -179,4 +196,4 @@ const NavigationDashboard = () => {
   );
 };
 
-export default NavigationDashboard;
+export default AdminNavigation;
