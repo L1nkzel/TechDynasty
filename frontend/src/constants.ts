@@ -4,3 +4,4 @@ export const CATEGORIES_URL = "/api/products/category";
 export const USERS_URL = "/api/users";
 export const ORDERS_URL = "/api/orders";
 export const PAYPAL_URL = "/api/config/paypal";
+export const UPLOAD_IMAGE_URL = "/api/upload";

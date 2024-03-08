@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import HomeScreen from "./screens/HomeScreen.tsx";
 import ProductScreen from "./screens/ProductScreen.tsx";
 import CategoryScreen from "./screens/CategoryScreen.tsx";
-import store from "./store";
+import store from "./store.ts";
 import CheckoutScreen from "./screens/CheckoutScreen.tsx";
 import OrderInfoScreen from "./screens/OrderInfoScreen.tsx";
 import UserProfileScreen from "./screens/UserProfileScreen.tsx";
@@ -21,7 +21,7 @@ import PrivateRoute from "./components/PrivateRoute.tsx";
 import AdminRoute from "./components/admin/AdminRoute.tsx";
 import AdminOrderScreen from "./components/admin/AdminOrderScreen.tsx";
 import AdminProductScreen from "./components/admin/AdminProductScreen.tsx";
-
+import AddProductScreen from "./components/admin/AddProductScreen.tsx";
 
 
 const router = createBrowserRouter(
@@ -35,6 +35,7 @@ const router = createBrowserRouter(
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />
         <Route path="/admin/products" element={<AdminProductScreen />} />
+        <Route path="/admin/products/addProduct" element={<AddProductScreen />} />
       </Route>
 
       <Route path="" element={<PrivateRoute />}>
