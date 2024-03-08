@@ -13,7 +13,7 @@ const buttonStyles = {
       backgroundColor: Colors.secondaryLight,
       color: "whitesmoke",
     },
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: Colors.highlight,
     color: Colors.primary,
   };
 
@@ -25,7 +25,7 @@ const ProfileNavigation = () => {
 
   const getButtonStyles = (isFocused: boolean) => ({
     ...buttonStyles,
-    backgroundColor: isFocused ? Colors.secondaryLight : Colors.primaryLight,
+    backgroundColor: isFocused ? Colors.secondary : Colors.highlight,
     color: isFocused ? "whitesmoke" : Colors.primary,
     "&:hover": {
         backgroundColor: Colors.secondaryLight, 

@@ -142,7 +142,7 @@ const ManageOrdersTable = () => {
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   sx={{
-                    bgcolor: Colors.primaryLight,
+                    bgcolor: Colors.highlight,
                     "& .MuiTablePagination-select, .MuiTablePagination-displayedRows, .MuiTablePagination-selectLabel":
                       {
                         fontSize: 12,

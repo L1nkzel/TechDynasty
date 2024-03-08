@@ -170,7 +170,10 @@ const ProfileSettings = () => {
           onClick={handleSave}
           size="small"
           variant="contained"
-          sx={{ mt: 1, bgcolor: Colors.secondaryLight, textTransform: "none" }}
+          sx={{ mt: 1, bgcolor: Colors.secondary, "&:hover": {
+            backgroundColor: Colors.secondaryLight, 
+            color:  "whitesmoke",
+          }, textTransform: "none" }}
         >
           Save
         </Button>

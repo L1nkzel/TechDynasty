@@ -12,10 +12,14 @@ const CategoryScreen = () => {
     isLoading,
     error,
     data: products,
-  } = useGetProductsByCategoryQuery(category);
+  } = useGetProductsByCategoryQuery(category) as {
+    isLoading: boolean;
+    error: any;
+    data: ProductType[];
+  };
 
   return (
-    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white"}}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", minHeight: "82vh" }}>
       {" "}
       {isLoading ? (
         <Typography>Loading...</Typography>

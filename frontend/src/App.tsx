@@ -10,7 +10,7 @@ const App = () => {
       <Header/>
       <Box
         minHeight="82vh"
-        sx={{ mt: {xs: 7, sm: 10 }, bgcolor: "#f5f5f5" }}
+        sx={{ bgcolor: "#f5f5f5" }}
       >
         <Outlet />
       </Box>

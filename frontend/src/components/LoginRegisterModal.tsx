@@ -165,7 +165,7 @@ const LoginRegisterModal = ({
           sx: {
             background: `linear-gradient(to top, ${Colors.modal}, #FBFBFB)`,
             width: 400,
-            borderRadius: 2,
+            borderRadius: 0.3,
           },
         }}
         sx={{

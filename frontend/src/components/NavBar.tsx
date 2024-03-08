@@ -24,6 +24,7 @@ import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { resetCart } from "../slices/shoppingCartSlice";
 import { RootState } from "../store";
+import NavbarNavigation from "./NavbarNavigation";
 
 export default function NavBar() {
   const { cartItems } = useSelector((state: RootState) => state.shoppingCart);
@@ -67,7 +68,7 @@ export default function NavBar() {
       <CustomAppBar>
         <Toolbar>
           {/* Drawer */}
-          <MyDrawer />
+          {!userInfo.isAdmin && <MyDrawer />}
           <Box display="flex" flex={1} alignItems={"center"}>
             {/*Logo */}
             <Link to="/" style={{ color: "white", textDecoration: "none" }}>
@@ -199,7 +200,12 @@ export default function NavBar() {
             </Stack>
           </Box>
         </Toolbar>
+        {!userInfo.isAdmin && <NavbarNavigation />}
       </CustomAppBar>
+
+      <Box sx={{ minHeight: { sm: 100 } }}>
+        <Toolbar />
+      </Box>
     </ThemeProvider>
   );
 }
