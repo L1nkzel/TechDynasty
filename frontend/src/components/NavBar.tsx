@@ -68,7 +68,7 @@ export default function NavBar() {
       <CustomAppBar>
         <Toolbar>
           {/* Drawer */}
-          {!userInfo.isAdmin && <MyDrawer />}
+          {userInfo && userInfo.isAdmin ? null : <MyDrawer />}
           <Box display="flex" flex={1} alignItems={"center"}>
             {/*Logo */}
             <Link to="/" style={{ color: "white", textDecoration: "none" }}>
@@ -200,7 +200,7 @@ export default function NavBar() {
             </Stack>
           </Box>
         </Toolbar>
-        {!userInfo.isAdmin && <NavbarNavigation />}
+        {userInfo && userInfo.isAdmin ? null : <NavbarNavigation />}
       </CustomAppBar>
 
       <Box sx={{ minHeight: { sm: 100 } }}>
