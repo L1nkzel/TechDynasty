@@ -1,19 +1,21 @@
-import { Box, Grid } from "@mui/material"
-import AdminNavigation from "./AdminNavigation"
-import ManageOrdersTable from "./ManageOrdersTable"
-
+import { Box, Grid } from "@mui/material";
+import AdminNavigation from "./AdminNavigation";
+import ManageOrdersTable from "./ManageOrdersTable";
 
 const AdminOrderScreen = () => {
   return (
-    <Box
-    sx={{
-      pt: 2,
-      height: "82vh",
-      overflow: "auto",
-    }}
-  >
-    <Grid container spacing={2} sx={{px:2, justifyContent: "center" }}>
-      <Grid item xs={11} sm={10} md={3} sx={{ px: 2, bgcolor: "white", height: "100vh" }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        px: 2,
+        pt: 2,
+        justifyContent: "center",
+        height: "82vh",
+        overflow: "auto",
+      }}
+    >
+      <Grid item xs={11} sm={10} md={3} sx={{ p: 2, bgcolor: "white" }}>
         <AdminNavigation />
       </Grid>
 
@@ -21,8 +23,7 @@ const AdminOrderScreen = () => {
         <ManageOrdersTable />
       </Grid>
     </Grid>
-  </Box>
-  )
-}
+  );
+};
 
-export default AdminOrderScreen
+export default AdminOrderScreen;

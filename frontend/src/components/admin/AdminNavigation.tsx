@@ -159,7 +159,7 @@ const AdminNavigation = () => {
         <Collapse in={open} timeout={30} unmountOnExit>
           <Button
             component={Link}
-            to="/admin/products/addProduct"
+            to="/addProduct"
             variant="contained"
             sx={{ ...getButtonStyles(isAddProductsScreen), width: "100%" }}
           >
