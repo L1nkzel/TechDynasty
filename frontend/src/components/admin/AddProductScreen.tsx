@@ -24,7 +24,7 @@ const AddProduct = () => {
   const [uploadProductImage, { isLoading: uploading }] =
     useUploadProductImageMutation({});
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [errorImage, setErrorImage] = useState(false)
+  const [errorImage, setErrorImage] = useState(false);
   const [productData, setProductData] = useState({
     user: userInfo._id,
     name: "",
@@ -57,7 +57,7 @@ const AddProduct = () => {
       // If a file is selected
       formData.append("image", file);
       try {
-        await uploadProductImage(formData).unwrap() as string;
+        (await uploadProductImage(formData).unwrap()) as string;
         // Show image preview
         const reader = new FileReader();
         reader.onload = () => {
@@ -69,7 +69,6 @@ const AddProduct = () => {
         console.log("Error uploading image");
         setErrorImage(true);
         console.log(error?.data?.message);
-        
       }
     } else {
       // If no file is selected or the user cancels, set to prev image
@@ -81,15 +80,25 @@ const AddProduct = () => {
   };
 
   return (
-    <Box
-      sx={{
-        pt: 2,
-        height: "82vh",
-        overflow: "auto",
-      }}
-    >
-      <Grid container spacing={2} sx={{px: 2, justifyContent: { xs: "center", md: "start"} }}>
-        <Grid item xs={11} sm={10} md={3.5} lg={3} sx={{px: 2, bgcolor: "white"}}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          px: 2,
+          pt: 2,
+          justifyContent: { xs: "center", md: "start" },
+          height: "82vh",
+          overflow: "auto",
+        }}
+      >
+        <Grid
+          item
+          xs={11}
+          sm={10}
+          md={3.5}
+          lg={3}
+          sx={{ p: 2, bgcolor: "white" }}
+        >
           <AdminNavigation />
         </Grid>
 
@@ -100,21 +109,26 @@ const AddProduct = () => {
           md={4}
           sx={{
             mt: 2,
+            display: "flex",
             justifyContent: { xs: "center", sm: "center", md: "start" },
           }}
         >
-          <Box sx={{display: "flex"}}>
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ mb: 4, width: "100%" }}>
             <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
               Add new product
             </Typography>
             <Typography
-              sx={{ width: {md: 200, lg: 300}, fontSize: 14, fontWeight: 400, color: "gray", mb: 2 }}
+              sx={{
+                width: { md: 200, lg: 300 },
+                fontSize: 14,
+                fontWeight: 400,
+                color: "gray",
+                mb: 2,
+              }}
             >
               Fill in the form below to add a product
             </Typography>
-         
-          
+
             <FormControl fullWidth>
               <CustomTextField
                 size="small"
@@ -198,61 +212,65 @@ const AddProduct = () => {
               />
             </FormControl>
             <Box
-            sx={{
-              display: { xs: "block", md: "none" },
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Card
               sx={{
-                
-                minHeight: 220,
-                maxheight: 240,
-                display: "flex",
+                display: { xs: "block", md: "none" },
                 flexDirection: "column",
                 alignItems: "center",
-                mt: 3,
-                boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 10px 1px",
-                borderRadius: "5px",
-                border: "1px solid lightgray",
               }}
             >
-              <Box
-                component={"img"}
-                src={productData.image ? productData.image : defaultImage}
-                maxHeight={220}
-                alt="image"
-                sx={{width: {xs: 230, sm: 300}, height: {xs: 190, sm: "100%"}, borderRadius: "5px", p: 1 }}
-              />
-            </Card>
-            <>
-              <Button
-                size="large"
-                variant="text"
-                component="label"
-                htmlFor="fileInput"
-                disableRipple
+              <Card
                 sx={{
-                  width: "100%",
-                  mt: 2,
-                  mb: 1,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  }
+                  minHeight: 220,
+                  maxheight: 240,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  mt: 3,
+                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 10px 1px",
+                  borderRadius: "5px",
+                  border: "1px solid lightgray",
                 }}
               >
-                Choose a image
-              </Button>
-              <Input
-                id="fileInput"
-                type="file"
-                onChange={uploadFileHandler}
-                sx={{ display: "none" }}
-              />
-            </>
-          </Box>
+                <Box
+                  component={"img"}
+                  src={productData.image ? productData.image : defaultImage}
+                  maxHeight={220}
+                  alt="image"
+                  sx={{
+                    width: { xs: 230, sm: 300 },
+                    height: { xs: 190, sm: "100%" },
+                    borderRadius: "5px",
+                    p: 1,
+                  }}
+                />
+              </Card>
+              <>
+                <Button
+                  size="large"
+                  variant="text"
+                  component="label"
+                  htmlFor="fileInput"
+                  disableRipple
+                  sx={{
+                    width: "100%",
+                    mt: 2,
+                    mb: 1,
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  Choose a image
+                </Button>
+                <Input
+                  id="fileInput"
+                  type="file"
+                  onChange={uploadFileHandler}
+                  sx={{ display: "none" }}
+                />
+              </>
+            </Box>
             <Button
               size="large"
               onClick={handleSubmit}
@@ -281,14 +299,14 @@ const AddProduct = () => {
           >
             <Card
               sx={{
-                width: { xs: 300, sm: 300, md: 300, lg: 330},
+                width: { xs: 300, sm: 300, md: 300, lg: 330 },
                 minHeight: 220,
                 maxheight: 240,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 ml: 4,
-                mt: {md: 11.5, lg: 8.5},
+                mt: { md: 11.5, lg: 8.5 },
 
                 boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 10px 1px",
                 borderRadius: "5px",
@@ -301,7 +319,11 @@ const AddProduct = () => {
                 height={220}
                 maxHeight={220}
                 alt="image"
-                sx={{width: { xs: 290, sm: 290, md: 290, lg: 310}, borderRadius: "5px", p: 1 }}
+                sx={{
+                  width: { xs: 290, sm: 290, md: 290, lg: 310 },
+                  borderRadius: "5px",
+                  p: 1,
+                }}
               />
             </Card>
             <>
@@ -311,7 +333,7 @@ const AddProduct = () => {
                 component="label"
                 htmlFor="fileInput"
                 sx={{
-                  width: { xs: 300, sm: 300, md: 300, lg: 330},
+                  width: { xs: 300, sm: 300, md: 300, lg: 330 },
                   ml: 4,
                   mt: 2,
                   textTransform: "none",
@@ -334,10 +356,8 @@ const AddProduct = () => {
             </>
             {uploading && <LinearProgress sx={{ mt: 2 }} />}
           </Box>
-          </Box>
         </Grid>
       </Grid>
-    </Box>
   );
 };
 

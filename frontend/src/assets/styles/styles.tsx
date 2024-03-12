@@ -27,10 +27,9 @@ export const CustomAppBar = styled(AppBar)(({ theme }) => ({
 
 export const CustomTextField = styled(TextField)(({ theme }) => ({
   // Add your custom styles here
-  paddingTop: theme.spacing(0.5),
-  paddingBottom: theme.spacing(0.5),
   marginTop: theme.spacing(0.7),
   marginBottom: theme.spacing(0.7),
+  backgroundColor: "white",
 }));
 
 export const IncDecButton = styled(Button)(({ theme }) => ({

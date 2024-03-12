@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardMedia,
-  Divider,
-  Grid,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, CardMedia, Divider, Grid, MenuItem, Stack, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -24,10 +14,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Colors } from "../assets/styles/styles";
 import AlertBox from "../components/AlertBox";
 import { RootState } from "../store";
+import { ProductType } from "../types";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const { isLoading, error, data: product } = useGetProductByIdQuery(productId);
+  const {
+    isLoading,
+    error,
+    data: product,
+  } = useGetProductByIdQuery(productId) as {
+    isLoading: boolean;
+    error: any;
+    data: ProductType;
+  };
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [open, setOpen] = useState(false);
 
@@ -56,6 +55,7 @@ const ProductScreen = () => {
       setOpen(true);
     }
   };
+  
 
   const handleChange = (event: any) => {
     setQty(event.target.value);
@@ -98,7 +98,7 @@ const ProductScreen = () => {
                 >
                   About this product
                 </Typography>
-                <Typography sx={{ mb: 4 }}>{product.description}</Typography>
+                <Typography sx={{ mb: 4, whiteSpace: "pre-line" }}>{product.description}</Typography>
               </Box>
             </Grid>
             {/* Cart grid */}

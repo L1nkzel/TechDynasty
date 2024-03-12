@@ -2,12 +2,13 @@ export interface ProductType {
     image: string;
     name: string;
     price: number;
-    _id: string;
-    rating: number;
-    numReviews: number;
+    _id?: string;
+    rating?: number;
+    numReviews?: number;
     category: string;
     countInStock: number;
     description: string;
+    brand: string;
   }
 
   export interface ShoppingCartState {
