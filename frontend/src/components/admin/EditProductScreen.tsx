@@ -5,6 +5,7 @@ import {
   CircularProgress,
   FormControl,
   Grid,
+  Grow,
   Input,
   LinearProgress,
   Typography,
@@ -69,7 +70,7 @@ const EditProductScreen = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await editProduct({_id: productId, ...productData}).unwrap();
+      await editProduct({ _id: productId, ...productData }).unwrap();
       navigate("/admin/products");
     } catch (error: any) {
       console.log(error);
@@ -81,6 +82,7 @@ const EditProductScreen = () => {
     const file = e.target.files[0];
 
     if (file) {
+      setErrorImage(false);
       // If a file is selected
       formData.append("image", file);
       try {
@@ -93,12 +95,14 @@ const EditProductScreen = () => {
         reader.readAsDataURL(file);
       } catch (error: any) {
         // If there is an error
-        console.log("Error uploading image");
-        setErrorImage(true);
+        if (error?.data?.message === "Images only!") {
+          setErrorImage(true);
+        }
         console.log(error?.data?.message);
       }
     } else {
       // If no file is selected or the user cancels, set to prev image
+      setErrorImage(false);
       setProductData({
         ...productData,
         image: productData.image,
@@ -180,7 +184,6 @@ const EditProductScreen = () => {
                   size="small"
                   value={productData.description}
                   multiline
-               
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setProductData({
                       ...productData,
@@ -198,7 +201,10 @@ const EditProductScreen = () => {
                   size="small"
                   value={productData.price}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setProductData({ ...productData, price: Number(e.target.value) })
+                    setProductData({
+                      ...productData,
+                      price: Number(e.target.value),
+                    })
                   }
                   label="Price"
                   name="price"
@@ -297,14 +303,35 @@ const EditProductScreen = () => {
                   >
                     Change image
                   </Button>
+
                   <Input
                     id="fileInput"
                     type="file"
                     onChange={uploadFileHandler}
                     sx={{ display: "none" }}
                   />
+                  {errorImage && (
+                    <Grow in={errorImage}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          mt: 1,
+                          ml: 4,
+                        }}
+                      >
+                        <Message severity="error">
+                          Only JPG, JPEG, PNG files are allowed
+                        </Message>
+                      </Box>
+                    </Grow>
+                  )}
                 </>
               </Box>
+
+              {loading && (
+                <LinearProgress sx={{ display: "flex", margin: "auto" }} />
+              )}
               <Button
                 size="large"
                 onClick={handleSubmit}
@@ -381,6 +408,22 @@ const EditProductScreen = () => {
                 >
                   Change image
                 </Button>
+                {errorImage && (
+                  <Grow in={errorImage}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        mt: 1,
+                        ml: 4,
+                      }}
+                    >
+                      <Message severity="error">
+                        Only JPG, JPEG, PNG files are allowed
+                      </Message>
+                    </Box>
+                  </Grow>
+                )}
                 <Input
                   id="fileInput"
                   type="file"
