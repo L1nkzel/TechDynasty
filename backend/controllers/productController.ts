@@ -26,11 +26,21 @@ const getProductById = asyncHandler(async (req, res) => {
     }
 });
 
+/*
+ * @desc Fetches all products by category
+ * @route GET /api/products/category/:category
+ * @access Public
+ */
 const getProductsByCategory = asyncHandler(async (req, res) => {
-    const products = await Product.find({category: req.params.category });
+    const products = await Product.find({ category: req.params.category });
     res.json(products);
 });
 
+/*
+ * @desc Add a new product
+ * @route POST /api/products
+ * @access Private/Admin
+ */ 
 const addProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         user: req.body.user,
@@ -49,6 +59,11 @@ const addProduct = asyncHandler(async (req, res) => {
     res.status(201).json(addProduct)
 });
 
+/*
+ * @desc Edit a product
+ * @route PUT /api/products/:id
+ * @access Private/Admin
+ */
 const editProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
 
@@ -69,4 +84,21 @@ const editProduct = asyncHandler(async (req, res) => {
     }
 });
 
-export { getAllproducts, getProductById, getProductsByCategory, addProduct, editProduct }
+/*
+ * @desc Delete a product
+ * @route DELETE /api/products/:id
+ * @access Private/Admin
+ */
+const deleteProduct = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+        await product.deleteOne({ _id: product._id });
+        res.json({ message: "Product removed" });
+    } else {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+});
+
+export { getAllproducts, getProductById, getProductsByCategory, addProduct, editProduct, deleteProduct }

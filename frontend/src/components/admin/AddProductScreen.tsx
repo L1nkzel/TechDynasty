@@ -20,8 +20,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import defaultImage from "../../assets/no_image.jpg";
 import Message from "../Message";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   const [addProduct] = useAddProductMutation({});
   const [uploadProductImage, { isLoading: uploading }] =
     useUploadProductImageMutation({});
@@ -46,6 +48,7 @@ const AddProduct = () => {
 
     try {
       await addProduct(productData).unwrap();
+      navigate("/admin/products");
     } catch (error) {
       console.log(error);
     }
