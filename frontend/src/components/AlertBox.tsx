@@ -12,13 +12,13 @@ export default function AlertBox({
   setOpen,
   text,
   deleteHandler,
-  productId,
+  id,
 }: {
   open: boolean;
   setOpen: any;
   text: String;
   deleteHandler?: any;
-  productId?: String;
+  id?: String;
 }) {
   const location = useLocation();
   const { userInfo } = useSelector((state: RootState) => state.auth);
@@ -31,7 +31,7 @@ export default function AlertBox({
     <>
       {userInfo &&
         userInfo.isAdmin &&
-        location.pathname === "/admin/products" && (
+        (location.pathname === "/admin/products" || location.pathname === "/admin/users") && (
           <Tooltip title="Delete">
             <IconButton onClick={() => setOpen(true)}>
               <DeleteOutlineIcon
@@ -60,9 +60,9 @@ export default function AlertBox({
           </DialogContentText>
           {userInfo &&
             userInfo.isAdmin &&
-            location.pathname === "/admin/products" && (
+            (location.pathname === "/admin/products" || location.pathname === "/admin/users") && (
               <DialogActions>
-                <Button onClick={() => productId && deleteHandler(productId)}>
+                <Button onClick={() => id && deleteHandler(id)}>
                   Yes
                 </Button>
                 <Button onClick={handleClose}>No</Button>

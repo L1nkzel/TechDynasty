@@ -109,7 +109,7 @@ const Products = () => {
                       open={open}
                       setOpen={setOpen}
                       deleteHandler={deleteHandler}
-                      productId={product._id as string}
+                      id={product._id as string}
                     />
                   </Box>
                 </CardContent>

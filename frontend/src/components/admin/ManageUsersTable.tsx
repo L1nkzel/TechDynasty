@@ -9,6 +9,7 @@ import { ThemeProvider } from "@emotion/react";
 import {
   Box,
   Button,
+  IconButton,
   TablePagination,
   Tooltip,
   Typography,
@@ -17,15 +18,18 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Colors, theme } from "../../assets/styles/styles";
-import { useGetAllUsersQuery } from "../../slices/usersApiSlice";
+import { useGetAllUsersQuery, useDeleteUserMutation } from "../../slices/usersApiSlice";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AlertBox from "../AlertBox";
 
 const ManageUsersTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { data: users, isLoading } = useGetAllUsersQuery({});
+  const { data: users, isLoading, refetch } = useGetAllUsersQuery({});
+  const [deleteUser] = useDeleteUserMutation();
+  const [open, setOpen] = useState(false);
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -46,6 +50,16 @@ const ManageUsersTable = () => {
 
   if (isLoading || !users) {
     return <div>Loading...</div>; // Render loading indicator
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteUser(id);
+      setOpen(false);
+      refetch();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -110,14 +124,21 @@ const ManageUsersTable = () => {
                           )}
                         </TableCell>
                         <TableCell align="right">
-                          <Button
+                          <IconButton
                             component={Link}
                             to={`/admin/user/${user._id}/edit`}
                           >
                             <Tooltip title="Details">
                               <ManageAccountsIcon />
                             </Tooltip>
-                          </Button>
+                          </IconButton>
+                         <AlertBox
+                            text={"Are you sure you want to delete this user?"}
+                            open={open}
+                            setOpen={setOpen}
+                            deleteHandler={handleDelete}
+                            id={user._id}
+                          />
                         </TableCell>
                       </>
                     )}
