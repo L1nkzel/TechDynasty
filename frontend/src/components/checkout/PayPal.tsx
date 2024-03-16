@@ -47,14 +47,14 @@ const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
 
   // Handle payment creation
   const createOrder = (data: any, actions: any) => {
-    console.log("Total Price:", order.totalPrice);
+    console.log("Total Price:", order?.totalPrice);
 
     return actions.order
       .create({
         purchase_units: [
           {
             amount: {
-              value: order.totalPrice || "0",
+              value: order?.totalPrice || "0",
             },
           },
         ],
@@ -72,15 +72,15 @@ const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
       console.log("PayPal response details:", details); // Log the details object
       try {
         const reqBody = {
-          orderId: order.id,
-          details: { ...details, email_address: details.payer.email_address }
-        }
+          orderId: order?.id,
+          details: { ...details, email_address: details.payer.email_address },
+        };
         await payOrder(reqBody);
         dispatch(clearCart());
         dispatch(savePaymentMethod(""));
 
         console.log("Transaction completed by", details.payer.name.given_name);
-        navigate(`/order/${order.id}`);
+        navigate(`/order/${order?.id}`);
       } catch (err) {
         console.log(err);
         onCancel();
@@ -90,9 +90,9 @@ const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
 
   // Handle payment cancellation
   const onCancel = async () => {
-   // Handle cancellation
+    // Handle cancellation
     try {
-      const res = await deleteOrder(order.id);
+      const res = await deleteOrder(order?.id);
       console.log("Order deleted successfully", res);
     } catch {
       console.error("Error deleting order:", error);
@@ -124,10 +124,10 @@ const PayPalModal = ({ setPaymentMethod }: { setPaymentMethod: any }) => {
         >
           Complete Order
         </Button>
+
         <Box sx={{ position: "relative", zIndex: 1 }}>
           <PayPalButtons
             fundingSource={FUNDING.PAYPAL}
-            disabled={isPending}
             style={{
               color: "blue",
               height: 35,
