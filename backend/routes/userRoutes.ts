@@ -7,14 +7,14 @@ import {
     registerUser,
     logoutUser,
     updateUserProfile,
-    getUsers,
+    getAllUsers,
     deleteUser,
     getUserById,
-    updateUser,
+    editUser,
 } from "../controllers/userController";
 import { protect, admin } from "../middleware/authMiddleware";
 
-router.route("/").post(registerUser).get(protect, admin, getUsers);
+router.route("/").post(registerUser).get(protect, admin, getAllUsers);
 router.route("/login").post(authUser);
 router.route("/logout").post(logoutUser);
 router.route("/profile")
@@ -23,7 +23,7 @@ router.route("/profile")
 router.route("/:id")
 .get(protect, admin, getUserById)
 .delete(protect, admin, deleteUser)
-.put(protect, admin, updateUser);
+.put(protect, admin, editUser);
 
 
 export default router;

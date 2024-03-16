@@ -21,6 +21,7 @@ import PrivateRoute from "./components/PrivateRoute.tsx";
 import AdminRoute from "./components/admin/AdminRoute.tsx";
 import AdminOrderScreen from "./components/admin/AdminOrderScreen.tsx";
 import AdminProductScreen from "./components/admin/AdminProductScreen.tsx";
+import AdminUsersScreen from "./components/admin/AdminUsersScreen.tsx";
 import AddProductScreen from "./components/admin/AddProductScreen.tsx";
 import EditProductScreen from "./components/admin/EditProductScreen.tsx";
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />
         <Route path="/admin/products" element={<AdminProductScreen />} />
+        <Route path="/admin/users" element={<AdminUsersScreen />} />
         <Route path="/addProduct" element={<AddProductScreen />} />
         <Route path="/editProduct/:id" element={<EditProductScreen />} />
       </Route>
