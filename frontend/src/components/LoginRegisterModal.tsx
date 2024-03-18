@@ -12,12 +12,13 @@ import { useState } from "react";
 import Logo from "../assets/logo.png";
 import { ThemeProvider } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
-import { ErrorResponse } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { ErrorResponse, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation, useRegisterMutation } from "../slices/usersApiSlice";
 import { setUserInfo, registerUser } from "../slices/authSlice";
 import PasswordFields from "./PasswordFields";
 import { Colors, CustomTextField, theme } from "../assets/styles/styles";
+import { RootState } from "../store";
 
 const LoginRegisterModal = ({
   open,
@@ -50,6 +51,9 @@ const LoginRegisterModal = ({
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
 
   const resetFormData = () => {
     setFormData({
@@ -80,34 +84,39 @@ const LoginRegisterModal = ({
     return emailRegex.test(email);
   };
 
-  const handleLogin = async (e: any) => {
-    e.preventDefault();
+const handleLogin = async (e: any) => {
+  e.preventDefault();
 
-    try {
-      const res = await login({
-        email: formData.email.toLowerCase(),
-        password: formData.password,
-      }).unwrap();
-      dispatch(setUserInfo({ ...res }));
+  try {
+    const res = await login({
+      email: formData.email.toLowerCase(),
+      password: formData.password,
+    }).unwrap();
+    dispatch(setUserInfo({ ...res }));
 
+    if (res.isAdmin) {
+    navigate("/admin/orders");
+    
+    } else {
       if (redirectUrl === "/checkout" && context === "checkoutCartLogin") {
         setExpandedPanel("panel2");
         dispatch(setOpen(false));
       } else {
         setExpandedPanel("panel1");
       }
-
-      dispatch(setOpen(false));
-    } catch (error: ErrorResponse | any) {
-      if (error.status === 401) {
-        setEmailIsValid(false);
-        setPasswordError(true);
-        return;
-      } else {
-        console.log(error);
-      }
     }
-  };
+
+    dispatch(setOpen(false));
+
+  } catch (error: ErrorResponse | any) {
+    if (error.status === 401) {
+      setEmailIsValid(false);
+      setPasswordError(true);
+    } else {
+      console.log(error);
+    }
+  }
+};
 
   const handleRegister = async (e: any) => {
     e.preventDefault();

@@ -38,9 +38,7 @@ const AdminNavigation = () => {
   const isOrdersScreen = location.pathname === "/admin/orders";
   const isUsersScreen = location.pathname === "/admin/users";
   const isProductsScreen = location.pathname === "/admin/products";
-  const isAddProductsScreen =
-    location.pathname === "/admin/products/addProduct";
-  location.pathname === "/admin/products/AddProduct";
+  const isAddProductsScreen = location.pathname === "/admin/addproduct";
   const isSettingsScreen = location.pathname === "/admin/settings";
 
   const getButtonStyles = (isFocused: boolean) => ({
@@ -159,7 +157,7 @@ const AdminNavigation = () => {
         <Collapse in={open} timeout={30} unmountOnExit>
           <Button
             component={Link}
-            to="/addProduct"
+            to="/admin/addproduct"
             variant="contained"
             sx={{ ...getButtonStyles(isAddProductsScreen), width: "100%" }}
           >

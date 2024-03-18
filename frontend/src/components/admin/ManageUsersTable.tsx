@@ -7,8 +7,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { ThemeProvider } from "@emotion/react";
 import {
-  Box,
-  Button,
   IconButton,
   TablePagination,
   Tooltip,
@@ -126,7 +124,7 @@ const ManageUsersTable = () => {
                         <TableCell align="right">
                           <IconButton
                             component={Link}
-                            to={`/admin/user/${user._id}/edit`}
+                            to={`/admin/user/${user._id}`}
                           >
                             <Tooltip title="Details">
                               <ManageAccountsIcon />

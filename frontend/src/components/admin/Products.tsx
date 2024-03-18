@@ -40,7 +40,7 @@ const Products = () => {
   const navigate = useNavigate();
 
   const editHandler = (id: string) => {
-    navigate(`/editProduct/${id}`);
+    navigate(`/admin/product/${id}`);
   };
 
   const deleteHandler = async (id: string) => {

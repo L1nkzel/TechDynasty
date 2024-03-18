@@ -7,23 +7,24 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import store from "./store.ts";
 import { Provider } from "react-redux";
+import PrivateRoute from "./components/PrivateRoute.tsx";
+import AdminRoute from "./components/admin/AdminRoute.tsx";
 import HomeScreen from "./screens/HomeScreen.tsx";
 import ProductScreen from "./screens/ProductScreen.tsx";
 import CategoryScreen from "./screens/CategoryScreen.tsx";
-import store from "./store.ts";
 import CheckoutScreen from "./screens/CheckoutScreen.tsx";
 import OrderInfoScreen from "./screens/OrderInfoScreen.tsx";
 import UserProfileScreen from "./screens/UserProfileScreen.tsx";
 import UserWishListScreen from "./screens/UserWishListScreen.tsx";
 import UserSettingsScreen from "./screens/UserSettingsScreen.tsx";
-import PrivateRoute from "./components/PrivateRoute.tsx";
-import AdminRoute from "./components/admin/AdminRoute.tsx";
 import AdminOrderScreen from "./components/admin/AdminOrderScreen.tsx";
 import AdminProductScreen from "./components/admin/AdminProductScreen.tsx";
 import AdminUsersScreen from "./components/admin/AdminUsersScreen.tsx";
 import AddProductScreen from "./components/admin/AddProductScreen.tsx";
 import EditProductScreen from "./components/admin/EditProductScreen.tsx";
+import EditUserScreen from "./components/admin/EditUserScreen.tsx";
 
 
 const router = createBrowserRouter(
@@ -37,9 +38,10 @@ const router = createBrowserRouter(
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />
         <Route path="/admin/products" element={<AdminProductScreen />} />
+        <Route path="/admin/product/:id" element={<EditProductScreen />} />
+        <Route path="/admin/addproduct" element={<AddProductScreen />} />
         <Route path="/admin/users" element={<AdminUsersScreen />} />
-        <Route path="/addProduct" element={<AddProductScreen />} />
-        <Route path="/editProduct/:id" element={<EditProductScreen />} />
+        <Route path="/admin/user/:id" element={<EditUserScreen />} />
       </Route>
 
       <Route path="" element={<PrivateRoute />}>
