@@ -6,6 +6,8 @@ import {
   Typography,
   Button,
   Badge,
+  AppBar,
+  Theme,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
@@ -14,7 +16,7 @@ import { MyDrawer } from "./MyDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import LoginRegisterModal from "./LoginRegisterModal";
 import CustomButton from "./CustomButton";
-import { CustomAppBar, theme } from "../assets/styles/styles";
+import { Colors, theme } from "../assets/styles/styles";
 import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
 import { AdminPanelSettings, Person } from "@mui/icons-material";
 import AccountMenu from "./AccountMenu";
@@ -63,9 +65,29 @@ export default function NavBar() {
     }
   };
 
+  const appBarStyle = (theme: Theme) => ({
+    position: "fixed",
+    justifyContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      height: 120,
+    },
+    background: Colors.primary,
+  });
+
+  const appBarStyleAdmin = (theme: Theme) => ({
+    position: "fixed",
+    justifyContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      height: 80,
+    },
+    background: Colors.primary,
+  });
+
   return (
     <ThemeProvider theme={theme}>
-      <CustomAppBar>
+      <AppBar
+        sx={userInfo && userInfo.isAdmin ? appBarStyleAdmin : appBarStyle}
+      >
         <Toolbar>
           {/* Drawer */}
           {userInfo && userInfo.isAdmin ? null : <MyDrawer />}
@@ -201,11 +223,17 @@ export default function NavBar() {
           </Box>
         </Toolbar>
         {userInfo && userInfo.isAdmin ? null : <NavbarNavigation />}
-      </CustomAppBar>
+      </AppBar>
 
-      <Box sx={{ minHeight: { sm: 100 } }}>
-        <Toolbar />
-      </Box>
+      {userInfo && userInfo.isAdmin ? (
+        <Box sx={{ minHeight: { sm: 80 } }}>
+          <Toolbar />
+        </Box>
+      ) : (
+        <Box sx={{ minHeight: { sm: 120 } }}>
+          <Toolbar />
+        </Box>
+      )}
     </ThemeProvider>
   );
 }

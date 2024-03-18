@@ -13,6 +13,8 @@ const NavbarNavigation = () => {
         bgcolor: Colors.primaryLight,
         width: "100%",
         p: 1,
+        position: "sticky",
+        top: 130,
         justifyContent: "center",
         borderBottom: "1px solid black",
       }}
