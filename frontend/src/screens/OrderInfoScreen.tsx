@@ -59,7 +59,7 @@ const OrderInfoScreen = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ bgcolor: "white", mx: { xs: 3, sm: 5, md: 10 } }}>
+      <Box sx={{ bgcolor: "white", mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 } }}>
         <Grid container justifyContent={"center"} p={4}>
           <Grid item xs={10} md={6} m={2}>
             <Typography

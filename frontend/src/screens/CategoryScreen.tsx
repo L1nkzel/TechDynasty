@@ -19,7 +19,7 @@ const CategoryScreen = () => {
   };
 
   return (
-    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", minHeight: "82vh" }}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 }, bgcolor: "white", minHeight: "82vh" }}>
       {" "}
       {isLoading ? (
         <Typography>Loading...</Typography>

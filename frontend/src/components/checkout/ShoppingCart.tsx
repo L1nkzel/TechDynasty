@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Colors, theme } from "../../assets/styles/styles";
 import QuantitySelector from "../QuantitySelector";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const ShoppingCart = ({
   cartItems,
@@ -156,7 +157,8 @@ const ShoppingCart = ({
           disabled={cartItems.length === 0}
           onClick={checkoutHandler}
         >
-          Go to Delivery info
+          Next
+          <NavigateNextIcon />
         </Button>
       </Box>
     </ThemeProvider>

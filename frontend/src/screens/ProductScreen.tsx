@@ -62,7 +62,7 @@ const ProductScreen = () => {
   };
 
   return (
-    <Box sx={{ mx: { xs: 3, sm: 5, md: 10 }, bgcolor: "white", p: 2 }}>
+    <Box sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 }, bgcolor: "white", p: 2 }}>
       {isLoading ? (
         <Typography variant="h4">Loading...</Typography>
       ) : error ? (

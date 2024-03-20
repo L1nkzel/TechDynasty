@@ -8,6 +8,10 @@ import {
   Badge,
   AppBar,
   Theme,
+  Autocomplete,
+  TextField,
+  ListSubheader,
+  IconButton,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
@@ -18,7 +22,7 @@ import LoginRegisterModal from "./LoginRegisterModal";
 import CustomButton from "./CustomButton";
 import { Colors, theme } from "../assets/styles/styles";
 import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
-import { AdminPanelSettings, Person } from "@mui/icons-material";
+import { AdminPanelSettings, Person, Search } from "@mui/icons-material";
 import AccountMenu from "./AccountMenu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,10 +31,12 @@ import { useLogoutMutation } from "../slices/usersApiSlice";
 import { resetCart } from "../slices/shoppingCartSlice";
 import { RootState } from "../store";
 import NavbarNavigation from "./NavbarNavigation";
+import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const { cartItems } = useSelector((state: RootState) => state.shoppingCart);
   const { userInfo } = useSelector((state: RootState) => state.auth);
+
   const { open, isRegistered } = useSelector(
     (state: RootState) => state.loginRegister
   );
@@ -69,6 +75,9 @@ export default function NavBar() {
     position: "fixed",
     justifyContent: "center",
     [theme.breakpoints.up("sm")]: {
+      height: 130,
+    },
+    [theme.breakpoints.down("sm")]: {
       height: 120,
     },
     background: Colors.primary,
@@ -90,18 +99,36 @@ export default function NavBar() {
       >
         <Toolbar>
           {/* Drawer */}
-          {userInfo && userInfo.isAdmin ? null : <MyDrawer />}
-          <Box display="flex" flex={1} alignItems={"center"}>
+          <Box
+            display="flex"
+            flex={1}
+            alignItems={"center"}
+            sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 } }}
+          >
+            {userInfo && userInfo.isAdmin ? null : <MyDrawer />}
             {/*Logo */}
             <Link to="/" style={{ color: "white", textDecoration: "none" }}>
               <Box
                 component="img"
                 src={Logo}
-                sx={{ maxWidth: { xxs: 120, xs: 180, sm: 230 } }}
+                sx={{
+                  maxWidth: { xxs: 120, xs: 180, sm: 180, md: 230 },
+                  mr: 2,
+                  ml: -3
+                }}
                 alt="TechDynasty Logo"
                 loading="lazy"
               />
             </Link>
+            <Box
+              sx={{
+                display: { xxs: "none", md: "block" },
+                width: { md: "100%", lg: "60%" },
+                my: "auto",
+              }}
+            >
+              <SearchBar />
+            </Box>
 
             {/*Navigation buttons for login and cart */}
             <Stack
@@ -109,6 +136,7 @@ export default function NavBar() {
               flexDirection="row"
               justifyContent="end"
               flexGrow={1}
+              sx={{ ml: 1 }}
             >
               {!userInfo || (userInfo && !userInfo.isAdmin) ? (
                 <>
@@ -156,12 +184,21 @@ export default function NavBar() {
                   <Box
                     sx={{ display: { xxs: "block", sm: "none" }, fontSize: 10 }}
                   >
-                    <CustomButton
-                      iconMobile={<ShoppingCartIcon />}
-                      text="Cart"
-                      component={Link}
-                      to="/checkout"
-                    />
+                    <IconButton component={Link} to="/checkout" color="inherit">
+                      {cartItems.length > 0 ? (
+                        <Badge
+                          badgeContent={cartItems.reduce(
+                            (a: number, c: any) => a + c.qty,
+                            0
+                          )}
+                          color="warning"
+                        >
+                          <ShoppingCartIcon />
+                        </Badge>
+                      ) : (
+                        <ShoppingCartIcon />
+                      )}
+                    </IconButton>
                   </Box>
                 </>
               ) : null}
@@ -205,7 +242,7 @@ export default function NavBar() {
                 <>
                   <CustomButton
                     icon={<Person />}
-                    text="Log in"
+                    text="Login"
                     iconMobile={<Person />}
                     onClick={handleOpen}
                   />
@@ -222,6 +259,16 @@ export default function NavBar() {
             </Stack>
           </Box>
         </Toolbar>
+        <Box
+          sx={{
+            display: { xxs: "block", md: "none" },
+            width: "90%",
+            mx: "auto",
+            mt: 0,
+          }}
+        >
+          <SearchBar />
+        </Box>
         {userInfo && userInfo.isAdmin ? null : <NavbarNavigation />}
       </AppBar>
 
@@ -230,7 +277,7 @@ export default function NavBar() {
           <Toolbar />
         </Box>
       ) : (
-        <Box sx={{ minHeight: { sm: 120 } }}>
+        <Box sx={{ minHeight: { xxs: 120, sm: 130 } }}>
           <Toolbar />
         </Box>
       )}

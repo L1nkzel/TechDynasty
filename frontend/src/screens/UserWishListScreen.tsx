@@ -6,7 +6,7 @@ const UserWishListScreen = () => {
     <Box
       sx={{
         pt: 2,
-        mx: { xs: 3, sm: 5, md: 8, lg: 10, xl: 18 },
+        mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 },
         bgcolor: "white",
         height: "82vh",
         overflow: "auto",

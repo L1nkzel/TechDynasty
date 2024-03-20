@@ -4,6 +4,7 @@ import {
   CustomTextField,
   DeliveryInfoContainer,
 } from "../../assets/styles/styles";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const DeliveryInfo = ({
   deliveryInfoHandler,
@@ -97,7 +98,8 @@ const DeliveryInfo = ({
           color="primary"
           onClick={deliveryInfoHandler}
         >
-          Go to Payment method
+                    Next
+          <NavigateNextIcon  />
         </Button>
       </Box>
     </Box>

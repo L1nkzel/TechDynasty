@@ -25,6 +25,7 @@ import AdminUsersScreen from "./components/admin/AdminUsersScreen.tsx";
 import AddProductScreen from "./components/admin/AddProductScreen.tsx";
 import EditProductScreen from "./components/admin/EditProductScreen.tsx";
 import EditUserScreen from "./components/admin/EditUserScreen.tsx";
+import SearchScreen from "./screens/SearchScreen.tsx";
 
 
 const router = createBrowserRouter(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       <Route path="/:category" element={<CategoryScreen />} />
       <Route path="/:category/:id"element={<ProductScreen />} />
       <Route path="/checkout" element={<CheckoutScreen />} />
+      <Route path="/search/:id" element={<SearchScreen />} />
 
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />
