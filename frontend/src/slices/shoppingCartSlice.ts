@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { pricesInCart } from "../utils/shoppingCartUtils";
 import { ProductType } from "../types";
 
@@ -10,19 +10,20 @@ const shoppingCartSlice = createSlice({
     name: "shoppingCart",
     initialState,
     reducers: {
-        addToCart: (state: any, action) => {
+        addToCart: (state: any, action: PayloadAction<ProductType>) => {
             const item = action.payload;
-
-            const existingItem = state.cartItems.find(
-                (x: ProductType) => x._id === item._id);
-
+        
+            const existingItem = state.cartItems.find((x: ProductType) => x._id === item._id);
+        
             if (existingItem) {
                 state.cartItems = state.cartItems.map(
                     (x: any) => x._id === existingItem._id ? { ...x, qty: item.qty } : x
-                )
+                );
             } else {
                 state.cartItems = [...state.cartItems, item];
             }
+        
+            // Assuming pricesInCart is a function that calculates prices
             return pricesInCart(state);
         },
         updateCartItemQty: (state: any, action) => {

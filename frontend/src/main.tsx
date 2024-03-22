@@ -35,7 +35,7 @@ const router = createBrowserRouter(
       <Route path="/:category" element={<CategoryScreen />} />
       <Route path="/:category/:id"element={<ProductScreen />} />
       <Route path="/checkout" element={<CheckoutScreen />} />
-      <Route path="/search/:id" element={<SearchScreen />} />
+      <Route path="/search" element={<SearchScreen />} />
 
       <Route path="" element={<AdminRoute />}>
         <Route path="/admin/orders" element={<AdminOrderScreen />} />

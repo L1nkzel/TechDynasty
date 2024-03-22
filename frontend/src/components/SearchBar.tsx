@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 import { ProductType } from "../types";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,7 @@ const SearchBar = () => {
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      navigate(`/search/${input}`);
+      navigate(`/search?q=${input}`);
       setInput("");
     }
   };
@@ -44,15 +44,22 @@ const SearchBar = () => {
       navigate(`/${value.category}/${value._id}`);
     } else {
       // If the selected value is a string, navigate to a search page with typed letters
-      navigate(`/search/${input}`);
+      navigate(`/search?q=${input}`);
     }
+    setInput("");
   };
 
   return (
     <Autocomplete
       id="grouped-demo"
-      sx={{ borderRadius: 1, bgcolor: "white", color: "black" }}
+      sx={{
+        width: { xs: "100%", lg: "60%" },
+        borderRadius: 1,
+        bgcolor: "white",
+        color: "black",
+      }}
       freeSolo
+      clearOnBlur
       size="small"
       disableClearable
       options={input.trim().length > 1 ? filteredProducts || [] : []} // Set options based on input
@@ -65,7 +72,8 @@ const SearchBar = () => {
       }
       renderOption={(props, product) => (
         <Box component="li" {...props} key={product._id} gap={2}>
-          <img
+          <Box
+            component="img"
             src={product.image}
             alt={product.name}
             style={{ width: "10%", height: "auto" }}
@@ -80,6 +88,7 @@ const SearchBar = () => {
       )}
       renderInput={(params) => (
         <TextField
+          placeholder="Search products"
           {...params}
           InputProps={{
             ...params.InputProps,
@@ -88,12 +97,6 @@ const SearchBar = () => {
             endAdornment: (
               <IconButton
                 size="small"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "black",
-                }}
                 onClick={handleSearch}
               >
                 <Search sx={{ color: "black" }} />
@@ -109,4 +112,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-

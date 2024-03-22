@@ -9,6 +9,7 @@ export interface ProductType {
   countInStock: number;
   description: string;
   brand: string;
+  qty?: number;
 }
 
 export interface ShoppingCartState {

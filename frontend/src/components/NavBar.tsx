@@ -103,7 +103,7 @@ export default function NavBar() {
             display="flex"
             flex={1}
             alignItems={"center"}
-            sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 } }}
+            sx={{ mx: { xs: 1, md: 6, lg: 10, xl: 18 } }}
           >
             {userInfo && userInfo.isAdmin ? null : <MyDrawer />}
             {/*Logo */}
@@ -122,9 +122,9 @@ export default function NavBar() {
             </Link>
             <Box
               sx={{
-                display: { xxs: "none", md: "block" },
-                width: { md: "100%", lg: "60%" },
-                my: "auto",
+                display: { xxs: "none", md: "flex" },
+                flex:1,
+                my: "auto"
               }}
             >
               <SearchBar />
@@ -135,8 +135,7 @@ export default function NavBar() {
               display="flex"
               flexDirection="row"
               justifyContent="end"
-              flexGrow={1}
-              sx={{ ml: 1 }}
+              sx={{ ml: 1, flex: { xxs: 1, md: 0 }}}
             >
               {!userInfo || (userInfo && !userInfo.isAdmin) ? (
                 <>
