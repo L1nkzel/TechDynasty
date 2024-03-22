@@ -186,7 +186,7 @@ const CheckoutSceen = () => {
         bgcolor={"#f5f5f5"}
         sx={{ minHeight: "82vh", }}
       >
-        <Grid item xxxs={12} xs={10} sm={11} md={9} lg={6} xl={7} sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 }}}>
+        <Grid item xxxs={12} xs={10} sm={11} md={9} lg={6} xl={6} sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10 }}}>
           <Accordion
             expanded={expanded === "panel1"}
             ref={paymentMethodAccordionRef}

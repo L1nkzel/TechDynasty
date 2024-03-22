@@ -30,7 +30,7 @@ export function MyDrawer() {
 
   return (
     <Box >
-      <IconButton sx={{display: { xxs: "flex", md: "none"}, color: "white", mr: 3, ml:{xxs:-2, xs:-4} }} onClick={handleClick}>
+      <IconButton sx={{display: { xxs: "flex", md: "none"}, color: "white", mr: 3, ml:{xxs:-1, xs:-2} }} onClick={handleClick}>
         <MenuIcon sx={{ fontSize: { xxs: 22, xs: 28, sm: 32 } }} />
       </IconButton>
       <Drawer

@@ -13,7 +13,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <Box sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10, xl: 18 }, bgcolor: "white", p:1}}>
+    <Box sx={{ mx: { xs: 0, md: 6, lg: 10, xl: 18 }, bgcolor: "white", p:1}}>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : error ? (
