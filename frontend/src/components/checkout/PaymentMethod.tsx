@@ -10,6 +10,10 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setOrder } from "../../slices/orderSlice";
+import { ProductType } from "../../types";
+import { clearCart } from "../../slices/shoppingCartSlice";
+import { useGetProductsQuery } from "../../slices/productsApiSlice";
+import { useDeleteOrderMutation } from "../../slices/ordersApiSlice";
 
 const Payment = ({
   setPaymentMethod,
@@ -19,7 +23,7 @@ const Payment = ({
   createOrder,
   savePaymentMethod,
   cart,
-
+  setExpanded,
   totalPrice,
   priceOfItems,
   shippingCost,
@@ -32,6 +36,7 @@ const Payment = ({
   createOrder: any;
   savePaymentMethod: any;
   cart: any;
+  setExpanded: any;
 
   totalPrice: number;
   priceOfItems: number;
@@ -39,47 +44,83 @@ const Payment = ({
   taxAmount: number;
 }) => {
   const dispatch = useDispatch();
+  const { data: products, refetch } = useGetProductsQuery({}) as {
+    isLoading: boolean;
+    error: any;
+    refetch: () => void;
+    data: ProductType[];
+  };
+  const [deleteOrder] = useDeleteOrderMutation();
 
   const handleRadioChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedPaymentMethod = e.target.value;
 
+
+
     if (selectedPaymentMethod === "PayPal") {
-      setPaymentMethod(selectedPaymentMethod); // Update selected payment method
-      setError(""); // Clear any previous errors
+        setPaymentMethod(selectedPaymentMethod);
+        setError(""); 
 
-      // Dispatch action to save payment method
-      dispatch(savePaymentMethod(selectedPaymentMethod));
+        dispatch(savePaymentMethod(selectedPaymentMethod));
 
-      // Create order with selected payment method
-      const res = await createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentOptions: selectedPaymentMethod,
-        priceOfItems: priceOfItems,
-        shippingCost: shippingCost,
-        taxAmount: taxAmount,
-        totalPrice: totalPrice,
-      }).unwrap();
-      console.log("Response from createOrder:", res); // Log the entire response object
-      console.log("Order ID from response:", res._id); // Log the order ID
+        const orderItemsWithDetails = cart.cartItems.map((item: ProductType & {qty: number}) => ({
+          product: item._id,
+            price: item.price, 
+            image: item.image, 
+            name: item.name,   
+            brand: item.brand, 
+            category: item.category, 
+            description: item.description, 
+            countInStock: item.countInStock, 
+            rating: item.rating, 
+            numReviews: item.numReviews, 
+            qty: item.qty
+        }));
 
-      dispatch(
-        setOrder({
-          id: res._id,
-          orderItems: res.cartItems,
-          totalPrice: res.totalPrice,
-          paymentOptions: selectedPaymentMethod,
-        })
-      );
+        const res = await createOrder({
+            orderItems: orderItemsWithDetails,
+            shippingAddress: cart.shippingAddress,
+            paymentOptions: selectedPaymentMethod,
+            priceOfItems: priceOfItems,
+            shippingCost: shippingCost,
+            taxAmount: taxAmount,
+            totalPrice: totalPrice,
+        }).unwrap();
+   
+        dispatch(
+            setOrder({
+                id: res._id,
+                orderItems: res.cartItems,
+                totalPrice: res.totalPrice,
+                paymentOptions: selectedPaymentMethod,
+            })
+        );
 
-      console.log(res._id);
-      console.log(res.orderItems);
-      console.log(res.totalPrice);
+        const outOfStockItem = cart.cartItems.find((item: ProductType & {qty: number}) => {
+
+          const product = products.find((p: ProductType) => p._id === item._id);
+          if (product) {
+            console.log(product, item);
+        
+            return product && item.qty > product.countInStock;
+          }
+     
+        });
+    
+        if (outOfStockItem) {
+            // Item is out of stock, cancel the order, empty the cart, and navigate to accordion 1
+            deleteOrder(res._id);
+            dispatch(setOrder(null));
+            dispatch(clearCart());
+            setExpanded("panel1"); // Navigate to accordion 1
+            return;
+        }
+
     } else {
-      setPaymentMethod(selectedPaymentMethod);
-      setError("");
+        setPaymentMethod(selectedPaymentMethod);
+        setError("");
     }
-  };
+};
 
   return (
     <>

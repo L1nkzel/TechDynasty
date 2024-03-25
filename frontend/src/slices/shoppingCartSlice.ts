@@ -10,22 +10,24 @@ const shoppingCartSlice = createSlice({
     name: "shoppingCart",
     initialState,
     reducers: {
-        addToCart: (state: any, action: PayloadAction<ProductType>) => {
+        addToCart: (state: any, action: PayloadAction<ProductType & { qty: number }>) => {
             const item = action.payload;
         
-            const existingItem = state.cartItems.find((x: ProductType) => x._id === item._id);
+            const existingItemIndex = state.cartItems.findIndex(
+                (x: ProductType) => x._id === item._id
+            );
         
-            if (existingItem) {
+            if (existingItemIndex !== -1) {
                 state.cartItems = state.cartItems.map(
-                    (x: any) => x._id === existingItem._id ? { ...x, qty: item.qty } : x
+                    (x: any, index: number) =>
+                        index === existingItemIndex ? { ...x, qty: item.qty } : x
                 );
             } else {
                 state.cartItems = [...state.cartItems, item];
             }
-        
-            // Assuming pricesInCart is a function that calculates prices
             return pricesInCart(state);
         },
+        
         updateCartItemQty: (state: any, action) => {
             const item = action.payload;
 

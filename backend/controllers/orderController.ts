@@ -1,35 +1,60 @@
 import asyncHandler from "../middleware/asyncHandler";
 import Order from "../models/orderModel";
+import Product from "../models/productModel";
 
-const deleteUnpaidOrders = async (orderId:any) => {
-    const order = await Order.findById(orderId);
-    if (order && !order.isPaymentCompleted) {
-        await order.deleteOne();
-        console.log(`Order ${orderId} deleted because it was not paid within 5 minutes.`);
+const deleteUnpaidOrder = async () => {
+    try {
+        const thresholdTime = new Date(Date.now() - 1 * 60 * 1000); // 1 minute ago
+        const unpaidOrders = await Order.find({
+            isPaymentCompleted: false,
+            createdAt: { $lt: thresholdTime }
+        });
+
+        for (const order of unpaidOrders) {
+            if (!order.isPaymentCompleted) {
+                // Update product counts for order items
+                for (const item of order.orderItems) {
+                    const product = await Product.findById(item.product);
+                    if (product) {
+                        product.countInStock += item.qty;
+                        await product.save();
+                    }
+                }
+
+                await order.deleteOne();
+                console.log('Order deleted:', order._id);
+            }
+        }
+    } catch (error) {
+        console.error('Error processing unpaid orders:', error);
     }
 };
 
+// Schedule batch processing to run every 1 minute
+setInterval(deleteUnpaidOrder, 1 * 60 * 1000);
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
 const createNewOrder = asyncHandler(async (req: any, res: any) => {
-    const {
-        orderItems,
-        shippingAddress,
-        paymentOptions,
-        priceOfItems,
-        taxAmount,
-        shippingCost,
-        totalPrice } = req.body;
+    const { orderItems, shippingAddress, paymentOptions, priceOfItems, taxAmount,
+        shippingCost, totalPrice } = req.body;
 
     if (orderItems && orderItems.length > 0) {
-        const order = new Order({
-            orderItems: orderItems.map((item: any) => ({
-                ...item,
-                product: item._id,
-                _id: undefined
-            })),
+        const itemsToUpdate = [];
+
+        for (const item of orderItems) {
+            const product = await Product.findById(item.product);
+            if (product) {
+                const originalCountInStock = product.countInStock;
+                product.countInStock -= item.qty;
+                await product.save();
+                itemsToUpdate.push({ product, originalCountInStock });
+            }
+        }
+
+        const newOrder = new Order({
+            orderItems: orderItems.map((item: any) => ({ ...item, _id: undefined })),
             user: req.user._id,
             shippingAddress,
             paymentOptions,
@@ -38,20 +63,16 @@ const createNewOrder = asyncHandler(async (req: any, res: any) => {
             shippingCost,
             totalPrice,
         });
-        const createdOrder = await order.save();
-        res.status(201).json(createdOrder);
 
-        // Delete unpaid orders after 5 minutes if not paid
-        const orderId = createdOrder._id;
-        setTimeout(() => {
-            deleteUnpaidOrders(orderId);
-        }, 5 * 60 * 1000); 
+        const createdOrder = await newOrder.save();
+        console.log('Order created:', createdOrder);
+
+        res.status(201).json(createdOrder);
 
     } else {
         res.status(400);
         throw new Error("No order items");
     }
-
 });
 
 // @desc    Get my orders
@@ -125,8 +146,6 @@ const markOrderAsDelivered = asyncHandler(async (req, res) => {
         throw new Error("Order not found");
     }
 
-
-
 });
 
 // @desc  Get all orders
@@ -134,7 +153,7 @@ const markOrderAsDelivered = asyncHandler(async (req, res) => {
 // @access Private/Admin
 const getAllOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({}).populate("user", "id name");
-    
+
     res.status(200).json(orders);
 });
 
@@ -144,7 +163,6 @@ const getAllOrders = asyncHandler(async (req, res) => {
 const deleteOrder = asyncHandler(async (req, res) => {
     const { orderId } = req.body;
 
-    // Check if orderId is provided
     if (!orderId) {
         res.status(400);
         throw new Error('Order ID is required');
@@ -157,8 +175,17 @@ const deleteOrder = asyncHandler(async (req, res) => {
         throw new Error('Order not found');
     }
 
-    await order.deleteOne();
+    // Update product counts for order items
+    for (const item of order.orderItems) {
+        const product = await Product.findById(item.product);
+        if (product) {
+            product.countInStock += item.qty;
+            await product.save();
+        }
+    }
 
+    await order.deleteOne();
+    console.log('Order deleted:', order._id);
     res.json({ message: 'Order deleted successfully' });
 });
 

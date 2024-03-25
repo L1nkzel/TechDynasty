@@ -27,7 +27,7 @@ const Rating: FunctionComponent<RatingProps> = ({ value, text, iconFontSize }) =
           )}
         </Box>
       ))}
-      <Typography fontSize={15} ml={0.5}>{text && text}</Typography>
+      <Typography fontSize={14} ml={0.5}>{text && text}</Typography>
     </Box>
   );
 };

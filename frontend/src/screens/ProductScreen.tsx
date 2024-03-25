@@ -39,7 +39,7 @@ const ProductScreen = () => {
       dispatch(
         addToCart({
           ...product,
-          qty,
+          qty: qty,
         })
       );
       navigate("/checkout");
@@ -47,7 +47,7 @@ const ProductScreen = () => {
       dispatch(
         addToCart({
           ...product,
-          qty,
+          qty: qty,
         })
       );
       navigate("/checkout");

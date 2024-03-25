@@ -98,7 +98,7 @@ const SearchScreen = () => {
 
   const addToCartHandler = (product: ProductType) => {
     console.log("Product:", product); // Log the product object to inspect it
-    dispatch(addToCart({ ...product, qty: 1 }));
+    dispatch(addToCart({ ...product, qty: 1 })); 
   };
 
   return (
@@ -224,7 +224,7 @@ const SearchScreen = () => {
                   >
                     <Rating
                       value={product.rating ?? 0}
-                      text={`(${product.numReviews} pcs)`}
+                      text={`(${product.numReviews})`}
                       iconFontSize={15}
                     />
                   </Grid>

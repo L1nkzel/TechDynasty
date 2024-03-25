@@ -34,18 +34,18 @@ import PayPal from "../components/checkout/PayPal";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   useCreateOrderMutation,
+  useDeleteOrderMutation,
   useGetPaypalClientIdQuery,
 } from "../slices/ordersApiSlice";
 import { setOrder } from "../slices/orderSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../store";
-
 
 const CheckoutSceen = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const order = useSelector((state: RootState) => state.order); 
+  const order = useSelector((state: RootState) => state.order);
   const cart = useSelector((state: RootState) => state.shoppingCart);
-  
+
   const [expanded, setExpanded] = useState("panel1");
   const [error, setError] = useState("");
   const { cartItems, shippingAddress } = cart;
@@ -73,32 +73,66 @@ const CheckoutSceen = () => {
     Number(shippingCost) +
     Number(taxAmount)
   ).toFixed(2);
+  const [deleteOrder] = useDeleteOrderMutation();
 
   const { open, isRegistered } = useSelector(
     (state: any) => state.loginRegister
-    );
-    
-    const [createOrder] = useCreateOrderMutation();
-    const { data: paypal } = useGetPaypalClientIdQuery("");
-    
-    const dispatch = useDispatch();
-    const [context, setContext] = useState("");
-    const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-    const paymentMethodAccordionRef = useRef<HTMLDivElement | null>(null);
-    
-    useEffect(() => {
-      if (expanded === "panel3") {
-        // Introduce a slight delay to allow for the expansion animation to complete
-        const delay = setTimeout(() => {
-          scrollPaymentMethodAccordionIntoView();
-        }, 100); // Adjust this delay as needed
-        
-        return () => clearTimeout(delay);
-      }
-    }, [expanded]);
+  );
 
-    //Temporary fix to Redirect to home page if user is logged in as admin
-    useEffect(() => {
+  const [createOrder] = useCreateOrderMutation();
+  const { data: paypal } = useGetPaypalClientIdQuery("");
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const [context, setContext] = useState("");
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const paymentMethodAccordionRef = useRef<HTMLDivElement | null>(null);
+  const [navigatedToOrder, setNavigatedToOrder] = useState(false);
+
+  useEffect(() => {
+    if (expanded === "panel3") {
+      // Introduce a slight delay to allow for the expansion animation to complete
+      const delay = setTimeout(() => {
+        scrollPaymentMethodAccordionIntoView();
+      }, 100); // Adjust this delay as needed
+
+      return () => clearTimeout(delay);
+    }
+  }, [expanded]);
+
+  // This useEffect hook updates the state to indicate whether the user navigated to a specific order.
+  useEffect(() => {
+    if (location.pathname === `/order/${order?.id}`) {
+      setNavigatedToOrder(true);
+    } else {
+      setNavigatedToOrder(false);
+    }
+  }, [location, order]);
+
+  // This useEffect hook cleans up by deleting the order if it is not expanded, not navigated to, and has an id.
+  useEffect(() => {
+    return () => {
+      if (expanded !== "panel3" && !navigatedToOrder && order?.id) {
+        deleteOrder(order.id)
+          .then(() => {
+            console.log("Order deleted successfully.");
+            dispatch(setOrder(null));
+          })
+          .catch((error: any) => {
+            console.error("Error deleting order:", error);
+          });
+      }
+    };
+  }, [expanded, navigatedToOrder, order, deleteOrder, dispatch]);
+
+  // This useEffect hook resets the order state when the user navigates to a different location.
+  useEffect(() => {
+    if (location.pathname === `/order/${order?.id}`) {
+      dispatch(setOrder(null));
+    }
+  }, [location.pathname, order, dispatch]);
+
+  //Temporary fix to Redirect to home page if user is logged in as admin
+  useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       navigate("/");
     }
@@ -117,8 +151,13 @@ const CheckoutSceen = () => {
     }
     if (panel === "panel1") {
       // Reset order states
+      try {
+        await deleteOrder(order?.id);
+      } catch {
+        console.error("Error deleting order:", error);
+        // Handle error
+      }
       setPaymentMethod("");
-      dispatch(setOrder(""));
     }
   };
 
@@ -184,9 +223,18 @@ const CheckoutSceen = () => {
         justifyContent="center"
         padding={2}
         bgcolor={"#f5f5f5"}
-        sx={{ minHeight: "82vh", }}
+        sx={{ minHeight: "82vh" }}
       >
-        <Grid item xxxs={12} xs={10} sm={11} md={9} lg={6} xl={6} sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10 }}}>
+        <Grid
+          item
+          xxxs={12}
+          xs={10}
+          sm={11}
+          md={9}
+          lg={6}
+          xl={6}
+          sx={{ mx: { xs: 3, sm: 5, md: 6, lg: 10 } }}
+        >
           <Accordion
             expanded={expanded === "panel1"}
             ref={paymentMethodAccordionRef}
@@ -368,6 +416,7 @@ const CheckoutSceen = () => {
                 shippingCost={Number(shippingCost)}
                 taxAmount={Number(taxAmount)}
                 totalPrice={Number(totalPrice)}
+                setExpanded={setExpanded}
               />
 
               <Box sx={{ backgroundColor: "#f5f5f5", p: 2 }}>
@@ -437,7 +486,7 @@ const CheckoutSceen = () => {
         {/* Order Summary */}
         {isLargeScreen && (
           <Grid item xxxs={12} xxs={10} xs={8} sm={10} md={8} lg={3.5} m={4}>
-            <Box position={"sticky" } top={"120px"}>
+            <Box position={"sticky"} top={"120px"}>
               <OrderSummary
                 cartItems={cartItems}
                 shippingCost={Number(shippingCost)}
