@@ -6,7 +6,7 @@ import { FunctionComponent } from "react";
 
 interface RatingProps {
   value: number;
-  text: string;
+  text?: string;
   iconFontSize: number;
 }
 

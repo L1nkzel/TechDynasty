@@ -53,9 +53,33 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: image
             })
-        })
-    })
+        }),
+        addReview : builder.mutation({
+            query: (product: any) => ({
+                url: `${PRODUCTS_URL}/${product.productId}/reviews`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['Product'],
+        }),
+        toggleReviewLike : builder.mutation({
+            query: (product: any) => ({
+                url: `${PRODUCTS_URL}/${product.productId}/reviews/${product.reviewId}/likes`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['Product'],
+        }),
+        toggleReviewDislike : builder.mutation({
+            query: (product: any) => ({
+                url: `${PRODUCTS_URL}/${product.productId}/reviews/${product.reviewId}/dislikes`,
+                method: "POST",
+                body: product
+            }),
+            invalidatesTags: ['Product'],
+        }),
+    }),
 });
 
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useGetProductsByCategoryQuery, useAddProductMutation, useEditProductMutation, useDeleteProductMutation, useUploadProductImageMutation } = productsApiSlice;
+export const { useGetProductsQuery, useGetProductByIdQuery, useGetProductsByCategoryQuery, useAddProductMutation, useEditProductMutation, useDeleteProductMutation, useUploadProductImageMutation, useAddReviewMutation, useToggleReviewLikeMutation, useToggleReviewDislikeMutation } = productsApiSlice;

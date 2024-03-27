@@ -1,14 +1,24 @@
+export interface Review {
+  name: string;
+  rating: number;
+  comment: string;
+  user: string; 
+}
+
+
 export interface ProductType {
   image: string;
+  user ?: string;
   name: string;
   price: number;
   _id?: string;
-  rating?: number;
+  rating: number;
   numReviews?: number;
   category: string;
   countInStock: number;
   description: string;
   brand: string;
+  reviews: Review[];
 }
 
 export interface ShoppingCartState {

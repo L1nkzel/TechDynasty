@@ -1,4 +1,14 @@
-import { Box, Button, Card, CardMedia, Divider, Grid, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardMedia,
+  Divider,
+  Grid,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -15,16 +25,19 @@ import { Colors } from "../assets/styles/styles";
 import AlertBox from "../components/AlertBox";
 import { RootState } from "../store";
 import { ProductType } from "../types";
+import Reviews from "../components/Reviews";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const {
     isLoading,
     error,
+    refetch,
     data: product,
   } = useGetProductByIdQuery(productId) as {
     isLoading: boolean;
     error: any;
+    refetch: () => void;
     data: ProductType;
   };
   const { userInfo } = useSelector((state: RootState) => state.auth);
@@ -55,7 +68,6 @@ const ProductScreen = () => {
       setOpen(true);
     }
   };
-  
 
   const handleChange = (event: any) => {
     setQty(event.target.value);
@@ -74,7 +86,7 @@ const ProductScreen = () => {
           </Button>
 
           <Grid container justifyContent={"center"} sx={{ mt: 2 }}>
-            <Grid item xs={9} sm={6} md={6} lg={5} xl={4}>
+            <Grid item xs={9} sm={6} md={6} lg={5} xl={5}>
               {/* Image grid */}
               <Typography sx={{ fontWeight: "bold", fontSize: 26 }}>
                 {product.name}
@@ -98,9 +110,31 @@ const ProductScreen = () => {
                 >
                   About this product
                 </Typography>
-                <Typography sx={{ mb: 4, whiteSpace: "pre-line" }}>{product.description}</Typography>
+                <Typography sx={{ mb: 5, whiteSpace: "pre-line" }}>
+                  {product.description}
+                </Typography>
+
+                {/* Reviews grid */}
+                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+                  Reviews
+                </Typography>
+                {product.reviews.length === 0 ? (
+                  <Typography sx={{ mb: 2 }}>
+                    No reviews yet, be the first to review!
+                  </Typography>
+                ) : (
+                  <Box sx={{ mb: 2 }}>
+                    <Typography sx={{ mb: 1, fontWeight: 500 }}>
+                      {" "}
+                      Average rating based on {product.numReviews} reviews
+                    </Typography>
+                    <Rating value={product.rating || 0} iconFontSize={24} />
+                  </Box>
+                )}
+                <Reviews product={product} productId={productId as string} refetch={refetch} />
               </Box>
             </Grid>
+
             {/* Cart grid */}
             <Grid
               item
@@ -108,7 +142,7 @@ const ProductScreen = () => {
               sm={4}
               md={4}
               lg={4}
-              xl={3}
+              xl={4}
               sx={{ ml: { sm: 8, md: 8 } }}
             >
               <Card sx={{ p: 2, my: 2 }}>
