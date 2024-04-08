@@ -1,8 +1,7 @@
 import asyncHandler from "../middleware/asyncHandler"
 import Product from "../models/productModel"
 import { Request, Response } from "express"
-import { Review, UserAuthInfoRequest } from "../types";
-import mongoose from "mongoose";
+import { UserAuthInfoRequest } from "../types";
 
 /*  
  * @desc Fetches all products
@@ -238,4 +237,35 @@ const toggleReviewDislike = asyncHandler(async (req: Request, res: Response) => 
     }
 });
 
-export { getAllproducts, getProductById, getProductsByCategory, addProduct, editProduct, deleteProduct, addProductReview, toggleReviewLike, toggleReviewDislike };
+// Fetches popular products based on popularity metrics (e.g., number of views)
+const getPopularProducts = asyncHandler(async (req: Request, res: Response) => {
+    try {
+        // Query products sorted by popularity metrics (e.g., descending order of views)
+        const popularProducts = await Product.find({}).sort({ views: -1 }).limit(10); // Limit to top 10 popular products
+        res.json(popularProducts);
+    } catch (error) {
+        console.error("Error fetching popular products:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+// Increment view count for a product
+const incrementProductViews = asyncHandler(async (req: Request, res: Response) => {
+    try {
+        const product = await Product.findById(req.params.id);
+
+        if (product) {
+            product.views += 1; // Increment view count
+            await product.save();
+            res.status(200).json({ message: "View count incremented successfully" });
+        } else {
+            res.status(404).json({ message: "Product not found" });
+        }
+    } catch (error) {
+        console.error("Error incrementing product views:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+
+export { getAllproducts, getProductById, getProductsByCategory, addProduct, editProduct, deleteProduct, addProductReview, toggleReviewLike, toggleReviewDislike, getPopularProducts, incrementProductViews };

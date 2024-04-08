@@ -18,7 +18,10 @@ export interface ProductType {
   countInStock: number;
   description: string;
   brand: string;
-  reviews: Review[];
+  reviews?: Review[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  views?: number;
 }
 
 export interface ShoppingCartState {

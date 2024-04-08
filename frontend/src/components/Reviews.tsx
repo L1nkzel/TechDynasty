@@ -28,10 +28,12 @@ const Reviews = ({
   product,
   productId,
   refetch,
+  handleLogin
 }: {
   product: ProductType;
   productId: string;
   refetch: () => void;
+  handleLogin: () => void
 }) => {
   const [addReview, { isLoading: loadingReview }] = useAddReviewMutation();
   const [rating, setRating] = useState(0);
@@ -76,12 +78,14 @@ const Reviews = ({
     }
   };
 
+
+
   useEffect(() => {
     if (product) {
       const updatedUserLike: { [key: string]: number } = {};
       const updatedUserDislike: { [key: string]: number } = {};
 
-      product.reviews.forEach((review: any) => {
+      product.reviews?.forEach((review: any) => {
         updatedUserLike[review._id] = review.likes.length;
         updatedUserDislike[review._id] = review.dislikes.length;
       });
@@ -182,26 +186,45 @@ const Reviews = ({
               <Divider sx={{ mt: 2, mb: 2 }} />
             </Box>
           ))}
-        <Box sx={{ mb: 2 }}>
-          <TextField
-            sx={{ width: "100%" }}
-            label="Your Review"
-            multiline
-            rows={3}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", mb: 2 }}>
-          <Typography sx={{ mb: 1, fontSize: 14, fontWeight: 400 }}>
-            Rate this product:
-          </Typography>
-          <Rating
-            value={rating}
-            onChange={(e, newValue: any) => setRating(newValue)}
-          />
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+
+        {userInfo ? (
+        <>
+           <Box sx={{ mb: 2 }}>
+           <TextField
+             sx={{ width: "100%" }}
+             label="Your Review"
+             multiline
+             rows={3}
+             value={comment}
+             onChange={(e) => setComment(e.target.value)}
+           />
+         </Box>
+         <Box sx={{ display: "flex", flexDirection: "column", mb: 2 }}>
+           <Typography sx={{ mb: 1, fontSize: 14, fontWeight: 400 }}>
+             Rate this product:
+           </Typography>
+           <Rating
+             value={rating}
+             onChange={(e, newValue: any) => setRating(newValue)}
+           />
+         </Box>
+         <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+           <Button
+             sx={{
+               textTransform: "none",
+               "&:hover": { backgroundColor: Colors.secondaryLight },
+               backgroundColor: Colors.secondary,
+             }}
+             variant="contained"
+             disabled={loadingReview}
+             onClick={submitReview}
+           >
+             Submit Review
+           </Button>
+         </Box>
+            </>
+        ): (
+          <Box sx={{ mb: 2 }}>
           <Button
             sx={{
               textTransform: "none",
@@ -209,12 +232,13 @@ const Reviews = ({
               backgroundColor: Colors.secondary,
             }}
             variant="contained"
-            disabled={loadingReview}
-            onClick={submitReview}
+            onClick={handleLogin}
           >
-            Submit Review
+            Login
           </Button>
         </Box>
+        )}
+       
       </Box>
     </Box>
   );

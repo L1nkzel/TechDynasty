@@ -13,12 +13,11 @@ import Logo from "../assets/logo.png";
 import { ThemeProvider } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
 import { ErrorResponse, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useLoginMutation, useRegisterMutation } from "../slices/usersApiSlice";
 import { setUserInfo, registerUser } from "../slices/authSlice";
 import PasswordFields from "./PasswordFields";
 import { Colors, CustomTextField, theme } from "../assets/styles/styles";
-import { RootState } from "../store";
 
 const LoginRegisterModal = ({
   open,
@@ -51,7 +50,6 @@ const LoginRegisterModal = ({
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
 

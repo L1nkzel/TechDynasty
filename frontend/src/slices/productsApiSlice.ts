@@ -11,6 +11,13 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5,
         }),
+        getPopularProducts: builder.query({
+            query: () => ({
+                url: `${PRODUCTS_URL}/popular`,
+            }),
+            keepUnusedDataFor: 5,
+            provideTags : ['Product'],
+        }),
         getProductById: builder.query({
             query: (productId: ProductType) => ({
                 url: `${PRODUCTS_URL}/${productId}`,
@@ -78,8 +85,15 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Product'],
         }),
+        incrementView: builder.mutation({
+            query: (productId: ProductType) => ({
+                url: `${PRODUCTS_URL}/increment/${productId}`,
+                method: "PUT",
+            }),
+            invalidatesTags: ['Product'],
+        })
     }),
 });
 
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useGetProductsByCategoryQuery, useAddProductMutation, useEditProductMutation, useDeleteProductMutation, useUploadProductImageMutation, useAddReviewMutation, useToggleReviewLikeMutation, useToggleReviewDislikeMutation } = productsApiSlice;
+export const { useGetProductsQuery, useGetProductByIdQuery, useGetProductsByCategoryQuery, useAddProductMutation, useEditProductMutation, useDeleteProductMutation, useUploadProductImageMutation, useAddReviewMutation, useToggleReviewLikeMutation, useToggleReviewDislikeMutation, useIncrementViewMutation, useGetPopularProductsQuery } = productsApiSlice;

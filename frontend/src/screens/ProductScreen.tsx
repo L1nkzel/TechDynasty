@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardMedia,
+  CircularProgress,
   Divider,
   Grid,
   MenuItem,
@@ -14,10 +15,13 @@ import Rating from "../components/Rating";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { useGetProductByIdQuery } from "../slices/productsApiSlice";
+import {
+  useGetProductByIdQuery,
+  useIncrementViewMutation,
+} from "../slices/productsApiSlice";
 import Message from "../components/Message";
 import { errorDisplayMessage } from "../components/errorDisplayMessage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { addToCart } from "../slices/shoppingCartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +30,8 @@ import AlertBox from "../components/AlertBox";
 import { RootState } from "../store";
 import { ProductType } from "../types";
 import Reviews from "../components/Reviews";
+import { setIsRegistered, setOpen } from "../slices/loginRegisterSlice";
+import LoginRegisterModal from "../components/LoginRegisterModal";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -41,11 +47,35 @@ const ProductScreen = () => {
     data: ProductType;
   };
   const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const { open, isRegistered } = useSelector(
+    (state: any) => state.loginRegister
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [qty, setQty] = useState(1);
+
+  const [incrementViews] = useIncrementViewMutation();
+
+  useEffect(() => {
+    // Call the API endpoint to increment views when component mounts
+    const increment = async () => {
+      try {
+        const res = await incrementViews(productId).unwrap();
+        console.log("increment succesfull", res);
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    };
+
+    increment();
+
+    // Clean up function (optional)
+    return () => {
+      // Any cleanup code if needed
+    };
+  }, [productId]); // Execute effect when productId changes
 
   const addToCartHandler = () => {
     if (userInfo && !userInfo.isAdmin) {
@@ -65,7 +95,7 @@ const ProductScreen = () => {
       );
       navigate("/checkout");
     } else {
-      setOpen(true);
+      setOpenModal(true);
     }
   };
 
@@ -73,10 +103,24 @@ const ProductScreen = () => {
     setQty(event.target.value);
   };
 
+  const handleLoginFromReviews = () => {
+    dispatch(setOpen(true));
+    dispatch(setIsRegistered(false));
+  }
+
   return (
-    <Box sx={{ mx: { xs: 0, md: 6, lg: 10, xl: 18 }, bgcolor: "white", p: 2 }}>
+    <Box sx={{ minHeight: "82vh", p: 2 }}>
       {isLoading ? (
-        <Typography variant="h4">Loading...</Typography>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress size={40} />
+        </Box>
       ) : error ? (
         <Message severity="error">{errorDisplayMessage(error)}</Message>
       ) : (
@@ -118,7 +162,7 @@ const ProductScreen = () => {
                 <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                   Reviews
                 </Typography>
-                {product.reviews.length === 0 ? (
+                {product.reviews?.length === 0 ? (
                   <Typography sx={{ mb: 2 }}>
                     No reviews yet, be the first to review!
                   </Typography>
@@ -131,7 +175,20 @@ const ProductScreen = () => {
                     <Rating value={product.rating || 0} iconFontSize={24} />
                   </Box>
                 )}
-                <Reviews product={product} productId={productId as string} refetch={refetch} />
+                <Reviews
+                  product={product}
+                  productId={productId as string}
+                  refetch={refetch}
+                  handleLogin={handleLoginFromReviews}
+                />
+                <LoginRegisterModal 
+                  open={open}
+                  setOpen={setOpen}
+                  setIsRegistered={setIsRegistered}
+                  isRegistered={isRegistered}
+                  setExpandedPanel={() => {}}
+                />
+
               </Box>
             </Grid>
 
@@ -212,8 +269,8 @@ const ProductScreen = () => {
               <Typography sx={{ mb: 4 }}>{product.description}</Typography>
             </Grid>
             <AlertBox
-              open={open}
-              setOpen={setOpen}
+              open={openModal}
+              setOpen={setOpenModal}
               text={"Log in as a customer to access this"}
             />
           </Grid>

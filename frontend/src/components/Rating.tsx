@@ -7,27 +7,29 @@ import { FunctionComponent } from "react";
 interface RatingProps {
   value: number;
   text?: string;
-  iconFontSize: number;
+  iconFontSize?: number;
+  style?: any;
+   reviewText?: any;
 }
 
 const ratingArray = [1, 2, 3, 4, 5];
 
 
-const Rating: FunctionComponent<RatingProps> = ({ value, text, iconFontSize }) => {
+const Rating: FunctionComponent<RatingProps> = ({ value, text, reviewText, iconFontSize, style }) => {
   return (
     <Box display="flex" flexWrap="wrap" alignItems="center" my={0.5}>
       {ratingArray.map((index) => (
         <Box  key={index} color={"gold"}>
-          {value >= index ? (
-            <StarIcon style={{fontSize: iconFontSize}}/>
-          ) : value >= index - 0.5 ? (
-            <StarHalfIcon style={{fontSize: iconFontSize}}/>
-          ) : (
-            <StarBorderIcon style={{fontSize: iconFontSize}}/>
-          )}
-        </Box>
+        {value >= index ? (
+          <StarIcon sx={{ fontSize: iconFontSize, ...style }}/> 
+        ) : value >= index - 0.5 ? (
+          <StarHalfIcon sx={{ fontSize: iconFontSize, ...style }}/>
+        ) : (
+          <StarBorderIcon sx={{ fontSize: iconFontSize, ...style }}/>
+        )}
+      </Box>
       ))}
-      <Typography fontSize={14} ml={0.5}>{text && text}</Typography>
+      <Typography sx={{...reviewText}} ml={0.5}>{text && text}</Typography>
     </Box>
   );
 };
