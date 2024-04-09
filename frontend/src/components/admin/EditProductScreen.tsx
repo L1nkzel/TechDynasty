@@ -51,6 +51,7 @@ const EditProductScreen = () => {
     image: "",
     category: "",
     brand: "",
+    rating: 0,
   });
 
   useEffect(() => {
@@ -63,6 +64,7 @@ const EditProductScreen = () => {
         image: product.image,
         category: product.category,
         brand: product.brand,
+        rating: product.rating,
       });
     }
   }, [product]);
