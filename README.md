@@ -5,12 +5,13 @@ This project is a e-commerce web application built using the Vite build tool and
 
 ## To do
 
+* ~~search functionality~~ :heavy_check_mark:
 * admin functionality - in progress
 * better error handling
 * test implementation
 * adding stripe for payment
 * order confirmaton to email
-* search bar
+* docker
 * ui improvements
 * soon to be deployed to Vercel
 * and more features and improvements to be added along the way..
