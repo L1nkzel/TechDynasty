@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import AdminNavigation from "./AdminNavigation";
 import { Colors, CustomTextField } from "../../assets/styles/styles";
-import { useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import {
   useAddProductMutation,
   useUploadProductImageMutation,
@@ -21,6 +21,9 @@ import { RootState } from "../../store";
 import defaultImage from "../../assets/no_image.jpg";
 import Message from "../Message";
 import { useNavigate } from "react-router-dom";
+import { CustomUploadError } from "../../types";
+
+
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ const AddProduct = () => {
     brand: "",
   });
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     console.log(productData);
 
@@ -54,9 +57,9 @@ const AddProduct = () => {
     }
   };
 
-  const uploadFileHandler = async (e: any) => {
+  const uploadFileHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const formData = new FormData();
-    const file = e.target.files[0];
+    const file = e.target.files && e.target.files[0];
 
     if (file) {
       setErrorImage(false);
@@ -70,12 +73,11 @@ const AddProduct = () => {
           setProductData({ ...productData, image: reader.result as string });
         };
         reader.readAsDataURL(file);
-      } catch (error: any) {
-        // If there is an error
-        if (error?.data?.message === "Images only!") {
+      } catch (error: unknown) {
+        if ((error as CustomUploadError)?.data?.message === "Images only!") {
           setErrorImage(true);
         }
-        console.log(error?.data?.message); 
+        console.log((error as CustomUploadError)?.data?.message); 
       }
     } else {
       // If no file is selected or the user cancels, set to prev image

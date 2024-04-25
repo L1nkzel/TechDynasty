@@ -11,7 +11,7 @@ import Message from "../Message";
 import AdminNavigation from "./AdminNavigation";
 import { Colors, CustomTextField } from "../../assets/styles/styles";
 import { errorDisplayMessage } from "../errorDisplayMessage";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useEditUserMutation,
@@ -40,7 +40,7 @@ const EditUserScreen = () => {
     }
   }, [user]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await editUser({ _id: userId, ...userData }).unwrap();

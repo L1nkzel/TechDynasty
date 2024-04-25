@@ -1,3 +1,9 @@
+export interface CustomUploadError {
+  data?: {
+    message: string;
+  };
+}
+
 export interface Review {
   name: string;
   rating: number;

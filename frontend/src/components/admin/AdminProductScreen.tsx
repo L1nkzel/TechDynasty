@@ -1,5 +1,5 @@
 import AdminNavigation from "./AdminNavigation";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Products from "./Products";
 
 const AdminProductScreen = () => {

@@ -12,14 +12,14 @@ import {
 } from "@mui/material";
 import AdminNavigation from "./AdminNavigation";
 import { Colors, CustomTextField } from "../../assets/styles/styles";
-import { useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import {
   useEditProductMutation,
   useGetProductByIdQuery,
   useUploadProductImageMutation,
 } from "../../slices/productsApiSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { ProductType } from "../../types";
+import { CustomUploadError, ProductType } from "../../types";
 import Message from "../Message";
 import { errorDisplayMessage } from "../errorDisplayMessage";
 
@@ -69,7 +69,7 @@ const EditProductScreen = () => {
     }
   }, [product]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await editProduct({ _id: productId, ...productData }).unwrap();
@@ -79,9 +79,9 @@ const EditProductScreen = () => {
     }
   };
 
-  const uploadFileHandler = async (e: any) => {
+  const uploadFileHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const formData = new FormData();
-    const file = e.target.files[0];
+    const file = e.target.files && e.target.files[0];
 
     if (file) {
       setErrorImage(false);
@@ -95,12 +95,11 @@ const EditProductScreen = () => {
           setProductData({ ...productData, image: reader.result as string });
         };
         reader.readAsDataURL(file);
-      } catch (error: any) {
-        // If there is an error
-        if (error?.data?.message === "Images only!") {
+      } catch (error: unknown) {
+        if ((error as CustomUploadError)?.data?.message === "Images only!") {
           setErrorImage(true);
         }
-        console.log(error?.data?.message);
+        console.log((error as CustomUploadError)?.data?.message);
       }
     } else {
       // If no file is selected or the user cancels, set to prev image
